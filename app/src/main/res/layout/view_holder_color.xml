@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:background="@drawable/rounded_button_outline_orange"
+    android:padding="10dp"
+    android:layout_margin="10dp">
+
+    <ImageView
+        android:id="@+id/imv_color_image"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/tv_color_name"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:text="Dog Product Food"
+        android:gravity="center"
+        android:layout_marginStart="10dp"
+        android:paddingHorizontal="10dp"
+        android:textSize="16sp"
+        android:fontFamily="@font/poppins_semibold"
+        android:textStyle="bold"
+        android:textColor="@color/edtColor"
+
+        tools:layout_editor_absoluteX="170dp"
+        tools:layout_editor_absoluteY="47dp" />
+</LinearLayout>

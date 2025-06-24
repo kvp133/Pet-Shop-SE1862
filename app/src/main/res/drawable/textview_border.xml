@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <shape xmlns:android="http://schemas.android.com/apk/res/android">
+        <!-- Màu nền của TextView -->
+        <solid android:color="#EBE8E8" />
+
+        <!-- Định dạng viền -->
+        <stroke
+            android:width="2dp"
+        android:color="@android:color/darker_gray" />
+
+        <!-- Góc bo tròn -->
+        <corners android:radius="3dp" />
+    </shape>

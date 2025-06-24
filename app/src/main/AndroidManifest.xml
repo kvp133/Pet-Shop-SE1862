@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:networkSecurityConfig="@xml/network_security_config"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.PetShopApplication"
+        tools:replace="android:theme"
+        tools:targetApi="31">
+        <activity
+            android:name=".UserPanel"
+            android:exported="false" />
+        <activity
+            android:name=".StatisticByRevenueActivity"
+            android:exported="false" />
+        <activity
+            android:name=".OrderTrackingActivity"
+            android:exported="false" />
+        <!-- <activity -->
+        <!-- android:name=".UserProfileActivity" -->
+        <!-- android:exported="false" /> -->
+        <activity
+            android:name=".AdminViewProductDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".PieChartActivity"
+            android:exported="false" />
+        <activity
+            android:name=".TrendingProductActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ViewAdminDashBoardActivity"
+            android:exported="false" />
+        <activity
+            android:name=".CreateOrderSuccessActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AddShopAddressActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ChangeShopAddressActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ViewDetailOrderActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ViewFeedBackItemActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ZaloPayPaymentActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AddCategoryActivity"
+            android:exported="false" />
+        <activity
+            android:name=".CategoryListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".PrepareOrderActivity"
+            android:exported="false" />
+         <activity
+         android:name=".ListOrderManageActivity"
+         android:exported="false" />
+        <activity
+            android:name=".ListOrderActivity"
+            android:exported="false" />
+        <activity
+            android:name=".CartActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ProductDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".HomeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".UpdateProductVariantActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AddressAddActivity"
+            android:exported="false" />
+        <activity
+            android:name=".LoginActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ListProductActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AddFeedbackActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ManageProductActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ListFeedbackActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SeedingActivity"
+            android:exported="false" />
+        <activity
+            android:name=".UpdateProductActivity"
+            android:exported="true" />
+        <activity
+            android:name=".PaymentActivity"
+            android:exported="true"
+            android:label="Merchant Demo"
+            android:launchMode="singleTask">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="app"
+                    android:scheme="demozpdk" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".AddressSelectionActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AddressUpdateActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AddProductActivity"
+            android:exported="true" />
+        <activity
+            android:name=".AddProductVariantActivity"
+            android:exported="true" />
+        <activity
+            android:name=".UpdateFeedbackActivity"
+            android:exported="false" />
+        <activity
+            android:name=".OrderingActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ListUserFeedbackActivity"
+            android:exported="false" />
+        <activity
+            android:name=".RegisterActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MainActivity"
+            android:exported="true" />
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
+    </application>
+
+</manifest>

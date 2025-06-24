@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--<selector xmlns:android="http://schemas.android.com/apk/res/android">-->
+    <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+        <item>
+            <shape>
+                <solid android:color="#EBE8E8" />
+<!--                <corners android:radius="12dp" />-->
+            </shape>
+        </item>
+        <item android:drawable="@drawable/baseline_upload_24" />
+    </layer-list>
+<!--</selector>-->

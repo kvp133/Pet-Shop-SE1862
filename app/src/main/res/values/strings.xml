@@ -1,0 +1,66 @@
+<resources>
+    <string name="app_name">PetShopApplication</string>
+    <string name="tbl_user_name">users</string>
+    <string name="tbl_product_name">products</string>
+    <string name="tbl_product_detail_name">productdetails</string>
+    <string name="tbl_feedback_name">feedbacks</string>
+    <string name="tbl_order_name">orders</string>
+    <string name="tbl_payment_name">payments</string>
+    <string name="tbl_order_detail_name">order_details</string>
+    <string name="tbl_role_name">roles</string>
+    <string name="tbl_category_name">categories</string>
+    <string name="tbl_address_name">addresses</string>
+    <string name="tbl_cart_name">carts</string>
+
+    <string name="petshop_address_city_id">100000</string>
+    <string name="petshop_address_district_id">100900</string>
+    <string name="petshop_address_ward_id">113</string>
+    <string name="petshop_address_city_description">Hà Nội</string>
+    <string name="petshop_address_district_description">Quận Long Biên</string>
+    <string name="petshop_address_ward_description">Phường long biên</string>
+    <string name="petshop_phone_nunmber">0358219555</string>
+    <string name="petshop_shop_name">Pet Shop</string>
+
+    <string name="msg_register_Success">Registration successful</string>
+    <string name="msg_password_fail">Passwords do not match</string>
+    <string name="msg_login_fail">User does not exist</string>
+    <string name="msg_invalid_credential">Invalid Credentials</string>
+
+
+    <string name="valid_password_fail">Password must be at least 8 characters long</string>
+    <string name="valid_fullName_fail">Full name must contain only letters and spaces</string>
+    <string name="valid_phone_fail">Phone number must be in format: 0xxxxxxxxx or +84-xxxxxxxxx</string>
+    <string name="valid_feedback_fail">Feedback comment must be at most 200 characters and not all spaces</string>
+    <string name="goship_api_token">eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjIyMGZjNDQwNDNhZDgyNGIxOGMxODA3Y2YzY2VkODQ5MjJhOTljZTgwZTYwMDYwODc1MzdhN2JiYzkwMjU0OGUyNDI1ZjA2Yjk4YzY4NjQzIn0.eyJhdWQiOiIxMzAiLCJqdGkiOiIyMjBmYzQ0MDQzYWQ4MjRiMThjMTgwN2NmM2NlZDg0OTIyYTk5Y2U4MGU2MDA2MDg3NTM3YTdiYmM5MDI1NDhlMjQyNWYwNmI5OGM2ODY0MyIsImlhdCI6MTcyOTYxNDQzMCwibmJmIjoxNzI5NjE0NDMwLCJleHAiOjE3NjExNTA0MzAsInN1YiI6IjMzMzQiLCJzY29wZXMiOltdfQ.HsgopEvG_zGyJ7kTPpfY5Pst9uo2vY3YN9bK9s8YaKQQrRfrXzQRO0WnjTB0yzZ_bgK9srjRSuopR82dwj8sPdcSPjXPV-czZeQfwiHLVAKDj6MKqnLF_A4IQIYz8MCgcxYfd-vrdSbdzGHejcctJKEAYJx4ucHoVCU4KRWqPnbXUZysZLT2_ytuztpWlqkOPhttI0u2z1wX0ctoR0jLpaSI_o7wTkFjtnZHu_4zxackwH96FXQq-5FpdmtNsRXmij6dLP1gKqVNVcSp9Q2mkMIqnrwNfLRyYI8QzvSHUJPtwydyTib97mjo1GT1nt69nxzF3pf10K-KE0ZwIBS7qxIrM4QqcZeM_hADx8iKzOuLumMbsYSZwuiLe3oLXGcP-whDcJxEUzlDdcxPRJPav9B79o7BQFuQ_Se1mY9Vw5gV6d7ZaWh3JxaxORhiicObpKD6G9BamD0-ltRJ0EZwjAFc2uMedAcdGnSHRtN11wP2I-sysutACXTsKX7bGz370_sSkacpY1LI_X88U91n1UKxZP-vGLowaHeZdB_n_R_0IDHFqyCzEwbChOp2BmOch06aXqaij-v9O0jHCcBWxmpIX2qEBcEeI6hf6D_AiH4NQoL8HRJRsK1GU12sw2u5j3WqCzDwL7zUstHYw3BDbyIUjK4Yt0PJD6JbnU5K2KA</string>
+
+
+    <!--    user - order-->
+    <string-array name="tab_order_manage_titles">
+        <item>Processing</item>
+        <item>Shipping</item>
+        <item>Return goods</item>
+        <item>Delivered</item>
+        <item>Canceled</item>
+    </string-array>
+
+    <!--    inventory - order-->
+    <string-array name="tab_order_manage_inventory_titles">
+        <item>All orders</item>
+        <item>Processing</item>
+        <item>Shipping</item>
+        <item>Delivered</item>
+        <item>Canceled</item>
+    </string-array>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+    <!--admin dashboard-->
+    <string name="ad_manage_product">Manage Product</string>
+    <string name="ad_manage_user">Manage User</string>
+    <string name="ad_manage_order">Manage Order</string>
+    <string name="open_nav">Open Navigation Drawer</string>
+    <string name="close_nav">Close Navigation Drawer</string>
+
+
+</resources>

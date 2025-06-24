@@ -1,0 +1,4 @@
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="@color/white" /> <!-- Background color of the View -->
+    <corners android:radius="20dp" />  <!-- Radius for the rounded corners -->
+</shape>

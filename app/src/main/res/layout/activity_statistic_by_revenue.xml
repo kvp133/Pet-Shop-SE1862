@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    tools:context=".StatisticByRevenueActivity">
+
+    <ImageView
+        android:id="@+id/imv_go_back"
+        android:layout_width="66dp"
+        android:layout_height="80dp"
+        android:padding="12dp"
+        android:layout_marginRight="180dp"
+        app:srcCompat="@drawable/baseline_arrow_back_24" />
+
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/revenueLineChart"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+</LinearLayout>

@@ -1,0 +1,98 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:padding="8dp"
+    android:background="@drawable/white_rectangle_button">
+
+    <!-- Avatar ImageView -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp">
+        <ImageView
+            android:id="@+id/imv_feedback_user_avatar"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:scaleType="centerCrop"
+            android:layout_gravity="center"
+            android:background="@drawable/circle_avatar" />
+        <TextView
+            android:id="@+id/tv_feedback_username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Username"
+            android:fontFamily="@font/poppins_semibold"
+            android:textStyle="bold"
+            android:textSize="14sp"
+            android:layout_gravity="center"
+            android:textColor="@android:color/black"
+            android:layout_marginBottom="4dp" />
+    </LinearLayout>
+
+
+    <!-- Feedback Details -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center"
+        android:layout_weight="1">
+
+        <!-- User Comment -->
+        <TextView
+            android:fontFamily="@font/poppins_light"
+            android:id="@+id/tv_feedback_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="User comment"
+            android:textSize="14sp"
+            android:textColor="@android:color/black"
+            android:layout_marginBottom="4dp" />
+
+        <!-- Rating Bar -->
+        <RatingBar
+            android:id="@+id/rtb_feedback_rating"
+            style="?android:attr/ratingBarStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:isIndicator="true"
+            android:numStars="5"
+            android:stepSize="1" />
+
+
+        <ImageView
+            android:id="@+id/imv_feedback_image"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:scaleType="centerCrop"
+            android:layout_gravity="left"
+            android:background="@drawable/circle_avatar"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/tv_feedback_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="textEnd"
+            android:fontFamily="@font/poppins_light"
+            android:text="Created at: 2024-09-2003 09:09:09"
+            android:textStyle="italic"
+            android:textSize="14sp"
+            android:textColor="@color/gray"
+            android:layout_marginBottom="4dp" />
+
+    </LinearLayout>
+    <!-- Hidden Spinner for actions (Update, Delete) -->
+    <Spinner
+        android:id="@+id/sp_feedback"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:dropDownWidth="wrap_content"
+        android:dropDownSelector="@drawable/ic_menu"
+        android:visibility="visible" />
+</LinearLayout>

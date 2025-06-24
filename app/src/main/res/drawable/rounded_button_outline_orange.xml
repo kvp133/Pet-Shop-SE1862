@@ -1,0 +1,5 @@
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="@android:color/transparent"/> <!-- Nền trong suốt -->
+    <stroke android:width="2dp" android:color="#F4A261"/> <!-- Viền màu cam -->
+    <corners android:radius="12dp"/> <!-- Góc bo tròn -->
+</shape>
