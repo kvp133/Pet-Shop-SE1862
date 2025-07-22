@@ -36,7 +36,6 @@ public class ListProductActivity extends AppCompatActivity implements ListProduc
     FirebaseDatabase database;
     DatabaseReference reference;
     private RecyclerView.Adapter productAdapter, categoryAdapter;
-    ScrollView scrollView;
     List<Category> categoryItems;
     List<Product> productItems;
     private int currentPage = 1;
@@ -55,29 +54,9 @@ public class ListProductActivity extends AppCompatActivity implements ListProduc
 
         database = FirebaseDatabase.getInstance();
         binding.prgLoadMore.setVisibility(View.GONE);
-        scrollView = binding.scrollView;
-        scrollView.getViewTreeObserver().addOnScrollChangedListener(() -> {
-            View view = scrollView.getChildAt(scrollView.getChildCount() - 1);
-            int diff = (view.getBottom() - (scrollView.getHeight() + scrollView.getScrollY()));
-
-            // If diff is zero, reached the bottom of the ScrollView
-            if (diff == 0 ) {
-                //increase page by 1
-                currentPage = currentPage + 1;
-                //display progress bar
-
-                //check if current page reach limit
-                if(currentPage <= LIMIT_PAGE) {
-                    binding.prgLoadMore.setVisibility(View.VISIBLE);
-                    //load more data
-                    new Handler(Looper.getMainLooper()).postDelayed(() -> {
-                        loadMoreProduct(categoryItems, currentPage, ITEMS_PER_PAGE);
-                    }, 2000);
-
-                }
-
-            }
-        });
+        // Xóa các dòng liên quan đến scrollView
+        // scrollView = binding.scrollView;
+        // scrollView.getViewTreeObserver().addOnScrollChangedListener(...);
 
         getIntentExtra();
         binding.tvSearch.setText(searchText);

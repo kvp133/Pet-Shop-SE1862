@@ -6,97 +6,115 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/glass_bg"
     tools:context=".CategoryListActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
+        android:padding="16dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+        <!-- Header Section -->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="60dp">
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:padding="8dp">
 
             <ImageView
                 android:id="@+id/btn_back"
-                android:layout_width="60dp"
-                android:layout_height="match_parent"
-                android:background="@drawable/baseline_keyboard_arrow_left_24"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:padding="12dp"
+                android:background="@drawable/glass_card"
+                android:elevation="4dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-
-                />
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:srcCompat="@drawable/baseline_arrow_back_24" />
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="60dp"
+                android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="Categories"
-                android:textColor="#FE854F"
-                android:textSize="20sp"
+                android:textColor="@android:color/white"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:fontFamily="@font/poppins_semibold"
                 app:layout_constraintStart_toEndOf="@id/btn_back"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintEnd_toStartOf="@id/imv_add_category"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
 
             <ImageView
                 android:id="@+id/imv_add_category"
-                android:layout_width="45dp"
-                android:layout_height="45dp"
-                android:layout_marginEnd="20dp"
-                android:background="@drawable/background_add_button"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:padding="12dp"
+                android:background="@drawable/glass_card"
+                android:elevation="4dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
-
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/baseline_add_24"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <EditText
-            android:id="@+id/edt_search"
-            android:visibility="gone"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="20dp"
-            android:background="@drawable/search_bar"
-            android:hint="Search category name..."
-            android:paddingLeft="10dp"
-            android:textColorHint="#FE854F"
-            app:layout_constraintStart_toStartOf="parent"
-
-
-            />
-
-        <TextView
-            android:id="@+id/tv_category_quantity"
+        <!-- Search Section -->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="20dp"
-            android:text="Quantity: "
-            android:textColor="#FE854F"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:visibility="gone"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/edt_search" />
+            android:layout_marginBottom="16dp"
+            android:orientation="vertical">
 
+            <EditText
+                android:id="@+id/edt_search"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/glass_card"
+                android:hint="Search category name..."
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:textColor="@android:color/white"
+                android:textColorHint="@color/glass_white_80"
+                android:textSize="16sp"
+                android:fontFamily="@font/poppins_light"
+                android:drawableStart="@drawable/baseline_search_24"
+                android:drawablePadding="12dp"
+                android:gravity="center_vertical"
+                android:visibility="visible" />
+
+            <TextView
+                android:id="@+id/tv_category_quantity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Quantity: 0"
+                android:textColor="@color/glass_white_80"
+                android:textSize="16sp"
+                android:fontFamily="@font/poppins_light"
+                android:visibility="visible" />
+
+        </LinearLayout>
+
+        <!-- Categories List -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rcv_list_category"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="20dp"
-            android:paddingBottom="10dp"
-            android:background="#E9E5E5"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@drawable/glass_card"
+            android:padding="8dp"
+            android:clipToPadding="false"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_category_quantity" />
-
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/edt_search"
+            app:layout_constraintBottom_toBottomOf="parent" />
 
     </LinearLayout>
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
