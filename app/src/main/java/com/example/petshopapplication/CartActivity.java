@@ -119,7 +119,7 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.OnCar
 
         //Read data cart of current user from firebase
         reference.orderByChild("userId").equalTo(userId)
-                .addListenerForSingleValueEvent(new ValueEventListener() {
+                .addValueEventListener(new ValueEventListener() {
 
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -273,8 +273,7 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.OnCar
                                                     Toast.makeText(CartActivity.this, "Delete cart item successfullu!", Toast.LENGTH_SHORT).show();
                                                     //Exit dialog
                                                     dialog.dismiss();
-                                                    //Reload cart list
-                                                    reloadCartList();
+                                                    //Reload cart list (đã bỏ, vì realtime update)
 
                                                 } else {
                                                     Toast.makeText(CartActivity.this, "Failed to delete cart item!", Toast.LENGTH_SHORT).show();
@@ -292,15 +291,6 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.OnCar
                         });
             }
         });
-
-    }
-
-    public void reloadCartList() {
-        cartList.clear();
-        CartAdapter emptyAdapter = new CartAdapter(new ArrayList<>(), new ArrayList<>(), CartActivity.this, CartActivity.this, CartActivity.this);
-        rec_cart.setAdapter(emptyAdapter);
-
-        initCart(user.getUid());
 
     }
 
