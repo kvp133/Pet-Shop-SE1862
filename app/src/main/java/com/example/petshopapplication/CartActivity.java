@@ -72,6 +72,11 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.OnCar
         //Get Id of current User
         auth = FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
+        if (user == null) {
+            Toast.makeText(this, "Bạn chưa đăng nhập!", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
         String userId = user.getUid();
 
         //Initialize firebase
@@ -114,7 +119,7 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.OnCar
 
         //Read data cart of current user from firebase
         reference.orderByChild("userId").equalTo(userId)
-                .addListenerForSingleValueEvent(new ValueEventListener() {
+                .addValueEventListener(new ValueEventListener() {
 
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -139,11 +144,13 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.OnCar
     }
 
     public void getListProductInCart(List<Cart> cartList) {
-
+        cartProductId.clear();
+        productList.clear();
         for (Cart cart : cartList) {
-            cartProductId.add(cart.getProductId());
+            if (cart != null && cart.getProductId() != null) {
+                cartProductId.add(cart.getProductId());
+            }
         }
-
         reference = database.getReference(getString(R.string.tbl_product_name));
         reference.orderByChild("id")
                 .addListenerForSingleValueEvent(new ValueEventListener() {
@@ -151,20 +158,26 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.OnCar
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (snapshot.exists()) {
                             for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-
                                 //Check if product is in cart or not
-                                if (cartProductId.contains(dataSnapshot.
-                                        child("id").getValue(String.class))) {
-                                    productList.add(dataSnapshot.getValue(Product.class));
+                                String productId = dataSnapshot.child("id").getValue(String.class);
+                                if (productId != null && cartProductId.contains(productId)) {
+                                    Product product = dataSnapshot.getValue(Product.class);
+                                    if (product != null) {
+                                        productList.add(product);
+                                    }
                                 }
                             }
-
                             RecyclerView rec = findViewById(R.id.rec_cart);
                             CartAdapter adapter = new CartAdapter(productList, cartList, CartActivity.this, CartActivity.this, CartActivity.this);
                             rec.setLayoutManager(new LinearLayoutManager(CartActivity.this));
                             rec.setAdapter(adapter);
-
-
+                            if (cartList.isEmpty()) {
+                                tv_cart_empty.setVisibility(View.VISIBLE);
+                            } else {
+                                tv_cart_empty.setVisibility(View.GONE);
+                            }
+                        } else {
+                            tv_cart_empty.setVisibility(View.VISIBLE);
                         }
                     }
 
@@ -260,8 +273,7 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.OnCar
                                                     Toast.makeText(CartActivity.this, "Delete cart item successfullu!", Toast.LENGTH_SHORT).show();
                                                     //Exit dialog
                                                     dialog.dismiss();
-                                                    //Reload cart list
-                                                    reloadCartList();
+                                                    //Reload cart list (đã bỏ, vì realtime update)
 
                                                 } else {
                                                     Toast.makeText(CartActivity.this, "Failed to delete cart item!", Toast.LENGTH_SHORT).show();
@@ -279,15 +291,6 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.OnCar
                         });
             }
         });
-
-    }
-
-    public void reloadCartList() {
-        cartList.clear();
-        CartAdapter emptyAdapter = new CartAdapter(new ArrayList<>(), new ArrayList<>(), CartActivity.this, CartActivity.this, CartActivity.this);
-        rec_cart.setAdapter(emptyAdapter);
-
-        initCart(user.getUid());
 
     }
 

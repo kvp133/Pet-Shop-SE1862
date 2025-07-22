@@ -180,13 +180,6 @@
                     android:layout_height="wrap_content">
 
                     <RadioButton
-                        android:id="@+id/checkboxPaymentZaloPay"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Thanh toán qua ZaloPay"
-                        android:textColor="@android:color/black" />
-
-                    <RadioButton
                         android:id="@+id/checkboxPaymentOnDelivery"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

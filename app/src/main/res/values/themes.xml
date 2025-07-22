@@ -1,11 +1,25 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme.PetShopApplication" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <!-- Chủ đạo -->
+        <item name="colorPrimary">@color/glass_blue_1</item>
+        <item name="colorPrimaryVariant">@color/glass_blue_2</item>
+        <item name="colorSecondary">@color/glass_link_blue</item>
+        <item name="colorOnPrimary">@android:color/white</item>
+        <item name="android:colorBackground">@color/glass_white_80</item>
+        <item name="android:textColorPrimary">@android:color/white</item>
+        <item name="android:textColorSecondary">@color/glass_white_80</item>
     </style>
 
     <style name="Theme.PetShopApplication" parent="Base.Theme.PetShopApplication" />
+
+    <!-- Navigation View Style -->
+    <style name="NavigationViewStyle" parent="Widget.MaterialComponents.NavigationView">
+        <item name="itemIconTint">@color/glass_blue_1</item>
+        <item name="itemTextColor">@color/glass_blue_1</item>
+        <item name="itemRippleColor">@color/glass_blue_2</item>
+        <item name="android:background">@drawable/glass_card</item>
+    </style>
 
     <style name="DialogAnimation">
         <item name ="android:windowEnterAnimation">@anim/slide_in</item>

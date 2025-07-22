@@ -1,52 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginStart="10dp"
-    android:layout_marginTop="5dp"
-    android:layout_marginEnd="10dp"
-    app:cardCornerRadius="12dp"
-    app:layout_marginBaseline="5dp">
+    android:layout_marginStart="12dp"
+    android:layout_marginTop="12dp"
+    android:layout_marginEnd="12dp"
+    android:layout_marginBottom="8dp"
+    app:cardCornerRadius="20dp"
+    app:cardElevation="10dp"
+    android:background="@drawable/glass_card">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="120dp"
-
+        android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp">
+        android:padding="12dp"
+        android:gravity="center_vertical">
 
         <CheckBox
             android:id="@+id/checkBox"
-            android:layout_width="25dp"
-            android:layout_height="match_parent"
-            android:layout_marginStart="5dp" />
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_marginEnd="8dp"
+            android:buttonTint="@color/glass_blue_1" />
 
         <ImageView
             android:id="@+id/imv_item"
-            android:layout_width="75dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_height="75dp"
-            android:layout_weight="1"
-            tools:srcCompat="@tools:sample/avatars" />
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginEnd="12dp"
+            android:background="@drawable/glass_card"
+            android:scaleType="centerCrop"
+            android:elevation="4dp"
+            android:clipToOutline="true"
+            android:outlineProvider="background"
+            android:contentDescription="Ảnh sản phẩm" />
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="3dp"
-            android:layout_marginEnd="10dp"
-            android:layout_weight="20"
+            android:layout_weight="1"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/tv_item_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="top"
-                android:text="Ten san pham"
+                android:ellipsize="end"
+                android:fontFamily="@font/poppins_semibold"
+                android:maxLines="2"
+                android:text="Tên sản phẩm"
+                android:textColor="@color/black"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
@@ -56,70 +61,104 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
                 android:background="@drawable/textview_border"
+                android:fontFamily="@font/poppins_light"
                 android:gravity="center_vertical"
-                android:paddingLeft="4dp"
-                android:paddingRight="4dp"
-                android:paddingBottom="4dp"
+                android:paddingLeft="6dp"
+                android:paddingRight="6dp"
+                android:paddingBottom="2dp"
                 android:text="Màu, size "
-                android:textSize="16sp" />
-
-            <TextView
-                android:id="@+id/tv_item_old_price"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:gravity="center_vertical"
-                android:text="Gia tien cu"
-                android:textColor="@color/deleteText" />
+                android:textColor="@color/black"
+                android:textSize="15sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginTop="4dp">
+
+                <TextView
+                    android:id="@+id/tv_item_old_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Giá cũ"
+                    android:textColor="@color/deleteText"
+                    android:fontFamily="@font/poppins_light"
+                    android:textSize="15sp" />
 
                 <TextView
                     android:id="@+id/tv_item_new_price"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center_vertical"
-                    android:text="Gia tien moi"
-                    android:textColor="@color/textColorHint"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginRight="10dp">
-
-                    <ImageView
-                        android:id="@+id/btn_decrease"
-                        android:onClick="decreaseClick"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center"
-                        android:src="@drawable/baseline_remove_24" />
-
-                    <TextView
-                        android:id="@+id/tv_item_quantity"
-                        android:layout_width="25dp"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:text="1" />
-
-                    <ImageView
-                        android:id="@+id/btn_increase"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:src="@drawable/baseline_add_24" />
-                </LinearLayout>
-
-
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:text="Giá mới"
+                    android:textColor="@color/glass_blue_1"
+                    android:textSize="17sp"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/poppins_semibold" />
             </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginTop="8dp">
+
+                <Button
+                    android:id="@+id/btn_decrease"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_marginEnd="6dp"
+                    android:background="@drawable/rounded_button_outline_orange"
+                    android:backgroundTint="@color/glass_blue_1"
+                    android:elevation="4dp"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:padding="0dp"
+                    android:text="-"
+                    android:textColor="@color/black"
+                    android:textSize="26sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv_item_quantity"
+                    android:layout_width="38dp"
+                    android:layout_height="48dp"
+                    android:layout_marginEnd="6dp"
+                    android:background="@drawable/glass_card"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:gravity="center"
+                    android:text="1"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/btn_increase"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_marginEnd="12dp"
+                    android:background="@drawable/rounded_button_outline_orange"
+                    android:backgroundTint="@color/glass_blue_1"
+                    android:elevation="4dp"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:padding="0dp"
+                    android:text="+"
+                    android:textColor="@color/black"
+                    android:textSize="26sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/btn_delete"
+                    android:layout_width="56dp"
+                    android:layout_height="44dp"
+                    android:text="Xóa"
+                    android:textColor="@color/red"
+                    android:textSize="16sp"
+                    android:background="@drawable/glass_card"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:layout_marginStart="8dp" />
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 
