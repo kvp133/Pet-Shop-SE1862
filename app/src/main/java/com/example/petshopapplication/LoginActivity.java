@@ -96,7 +96,7 @@ public class LoginActivity extends AppCompatActivity {
         //SharedPreferences init
         sharedPreferences = getSharedPreferences("User", MODE_PRIVATE);
         editor = sharedPreferences.edit();
-        
+
         // Check if user is already signed in
         if (firebaseAuth.getCurrentUser() != null) {
             // User is already signed in, redirect to appropriate activity
@@ -105,7 +105,7 @@ public class LoginActivity extends AppCompatActivity {
             // Clear any existing auth state to ensure clean login
             firebaseAuth.signOut();
         }
-        
+
         //Check if user is remembered
         boolean isRemembered = sharedPreferences.getBoolean("remember", false);
         if(isRemembered) {
@@ -251,9 +251,9 @@ public class LoginActivity extends AppCompatActivity {
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w("LoginActivity", "signInWithEmail:failure", task.getException());
-                            
+
                             String errorMessage = "Authentication failed";
-                            
+
                             if (task.getException() instanceof FirebaseAuthInvalidUserException) {
                                 errorMessage = "No account found with this email address";
                             } else if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
@@ -268,7 +268,7 @@ public class LoginActivity extends AppCompatActivity {
                                     errorMessage = exceptionMessage;
                                 }
                             }
-                            
+
                             Toast.makeText(LoginActivity.this, errorMessage, Toast.LENGTH_LONG).show();
                         }
                     }
@@ -308,7 +308,7 @@ public class LoginActivity extends AppCompatActivity {
                         break; // Exit loop after finding the user
                     }
                 }
-                
+
                 if (!userFound) {
                     Toast.makeText(LoginActivity.this, "User data not found!", Toast.LENGTH_SHORT).show();
                     // Sign out if user data is not found
