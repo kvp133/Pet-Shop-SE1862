@@ -18,7 +18,7 @@
 
     <item
         android:id="@+id/ad_bottom_nav_manage_feedback"
-        android:title="Manage Product"
+        android:title="Manage Feedback"
         android:icon="@drawable/baseline_window_24" />
 
 </menu>

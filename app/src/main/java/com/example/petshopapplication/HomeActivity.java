@@ -3,6 +3,7 @@ package com.example.petshopapplication;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -10,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.app.AlertDialog;
 
 import com.example.petshopapplication.Adapter.CategoryAdapter;
 import com.example.petshopapplication.Adapter.FeedBackAdapter;
@@ -53,9 +55,16 @@ public class HomeActivity extends AppCompatActivity {
         //welcome name
         firebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser user = firebaseAuth.getCurrentUser();
+        if (user == null) {
+            // Nếu chưa, chuyển về màn hình Login và kết thúc HomeActivity
+            startActivity(new Intent(HomeActivity.this, LoginActivity.class));
+            finish();
+            return;
+        }
         String userId = user.getUid();
-
         database = FirebaseDatabase.getInstance();
+        loadAndDisplayUserName(userId);
+        
         //initNewProduct();
         initCategory();
         initFeedback();
@@ -76,14 +85,53 @@ public class HomeActivity extends AppCompatActivity {
         });
 
         binding.btnHomeLogout.setOnClickListener(v -> {
-            firebaseAuth.signOut();
-            Intent intent = new Intent(this, LoginActivity.class);
+            new AlertDialog.Builder(this)
+                    .setTitle("Đăng xuất")
+                    .setMessage("Bạn có chắc chắn muốn đăng xuất không?")
+                    .setPositiveButton("Có", (dialog, which) -> {
+                        firebaseAuth.signOut();
+                        Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
+                        // Xóa hết các Activity cũ và tạo một Task mới
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
+                        Toast.makeText(HomeActivity.this, "Đã đăng xuất", Toast.LENGTH_SHORT).show();
+                        finish(); // Đóng HomeActivity
+                    })
+                    .setNegativeButton("Không", null)
+                    .show();
+        });
+
+        binding.btnHomeUserPanel.setOnClickListener(v -> {
+            Intent intent = new Intent(HomeActivity.this, UserPanel.class);
+            // Không cần truyền userId vì UserPanel có thể tự lấy thông tin người dùng hiện tại
             startActivity(intent);
         });
 
         binding.tvViewListProduct.setOnClickListener(v -> {
             Intent intent = new Intent(HomeActivity.this, ListProductActivity.class);
             startActivity(intent);
+        });
+    }
+
+    private void loadAndDisplayUserName(String userId) {
+        DatabaseReference userRef = database.getReference(getString(R.string.tbl_user_name));
+        // Truy vấn đến user có id tương ứng
+        userRef.child("user-" + userId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    User currentUser = snapshot.getValue(User.class);
+                    if (currentUser != null) {
+                        // Cập nhật TextView với tên người dùng
+                        binding.tvUserName.setText(currentUser.getFullName());
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(HomeActivity.this, "Lỗi khi tải thông tin người dùng.", Toast.LENGTH_SHORT).show();
+            }
         });
     }
 
@@ -169,11 +217,7 @@ public class HomeActivity extends AppCompatActivity {
                             binding.rcvFeedback.setLayoutManager(new LinearLayoutManager(HomeActivity.this, RecyclerView.VERTICAL, true));
                             binding.rcvFeedback.setAdapter(feedbackAdapter);
 
-                            binding.btnHomeUserPanel.setOnClickListener(v -> {
-                                Intent intent = new Intent(HomeActivity.this, UserPanel.class);
-                                intent.putExtra("userId", userItems.get(0).getId());
-                                startActivity(intent);
-                            });
+
                         }
                         binding.prgFeedback.setVisibility(View.GONE);
                     }

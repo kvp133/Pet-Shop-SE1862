@@ -35,12 +35,11 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/textView3"
+                    android:id="@+id/tv_user_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="1dp"
-                    android:text="Hoai Nam"
-                    android:textStyle="bold"
+                    tools:text="Tên Người Dùng"  android:textStyle="bold"
                     android:fontFamily="@font/poppins_semibold"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/textView"
