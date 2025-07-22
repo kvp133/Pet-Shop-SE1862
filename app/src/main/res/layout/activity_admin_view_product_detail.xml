@@ -2,11 +2,11 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/product_details"
+    android:id="@+id/admin_product_details"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/glass_bg"
-    tools:context=".ProductDetailActivity">
+    tools:context=".AdminViewProductDetailActivity">
 
     <ScrollView
         android:id="@+id/scrollView2"
@@ -27,7 +27,7 @@
                 android:background="@drawable/glass_card" android:orientation="vertical">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_height"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
                     <ImageView
