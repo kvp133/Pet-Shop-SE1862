@@ -81,7 +81,6 @@ public class PaymentActivity extends AppCompatActivity implements RateAdapter.On
     private TextView feeShip;
     private TextView purchasedMoney;
     private RadioButton checkboxPaymentOnDelivery;
-    private RadioButton checkboxPaymentZaloPay;
     private Button payButton;
     private String selectedRateID;
     private String selectedCartierName;
@@ -89,8 +88,7 @@ public class PaymentActivity extends AppCompatActivity implements RateAdapter.On
     private List<Product> productList = new ArrayList<>();
     private double finalTotalAmount;
     private ImageView btn_back;
-    private String zalo_transactionId;
-    private String zaloMoney;
+
 
     FirebaseAuth auth;
     FirebaseUser user;
@@ -141,7 +139,6 @@ public class PaymentActivity extends AppCompatActivity implements RateAdapter.On
         getDefaultAddress(userId);
         loadProductDetails();
         checkboxPaymentOnDelivery = findViewById(R.id.checkboxPaymentOnDelivery);
-        checkboxPaymentZaloPay = findViewById(R.id.checkboxPaymentZaloPay);
         payButton = findViewById(R.id.payButton);
 
         StrictMode.ThreadPolicy policy = new
@@ -149,7 +146,7 @@ public class PaymentActivity extends AppCompatActivity implements RateAdapter.On
         StrictMode.setThreadPolicy(policy);
 
         // ZaloPay SDK Init
-        ZaloPaySDK.init(553, Environment.SANDBOX);
+        // ZaloPaySDK.init(553, Environment.SANDBOX); // Removed ZaloPay SDK initialization
 
 
         payButton.setOnClickListener(v -> {
@@ -157,66 +154,9 @@ public class PaymentActivity extends AppCompatActivity implements RateAdapter.On
                 Toast.makeText(PaymentActivity.this, "Vui lòng chọn phương thức vận chuyển", Toast.LENGTH_SHORT).show();
                 return;
             }
-            if (checkboxPaymentOnDelivery.isChecked()) {/* other payment method check */
+            if (checkboxPaymentOnDelivery.isChecked()) {
                 createOrderAndPayment();
                 deleteCartItem();
-
-            } else if (checkboxPaymentZaloPay.isChecked()) {
-
-                CreateOrder orderApi = new CreateOrder();
-
-
-                try {
-                    int totalAmount = (int) Math.round(finalTotalAmount); // Làm tròn lên hoặc xuống
-                    String finalTotalAmountStr = String.valueOf(totalAmount); // Chuyển đổi thành chuỗi
-                    Log.d(TAG, "Final total amount: " + finalTotalAmountStr); // Log tổng tiền cần thanh toán
-
-                    JSONObject data = orderApi.createOrder(finalTotalAmountStr);
-                    Log.d(TAG, "Create order response: " + data.toString()); // Log phản hồi từ API tạo đơn hàng
-
-                    String code = data.getString("returncode");
-                    Log.d(TAG, "Return code from create order: " + code); // Log mã trả về từ API
-
-                    if (code.equals("1")) {
-                        String token = data.getString("zptranstoken");
-                        Log.d(TAG, "ZaloPay token received: " + token); // Log token nhận được từ API
-
-                        ZaloPaySDK.getInstance().payOrder(PaymentActivity.this, token, "demozpdk://app", new PayOrderListener() {
-
-                            @Override
-                            public void onPaymentSucceeded(String transactionId, String orderId, String amount) {
-                                Log.d(TAG, "Payment succeeded: Transaction ID: " + transactionId + ", Order ID: " + orderId + ", Amount: " + amount);
-                                zalo_transactionId = transactionId;
-                                zaloMoney = finalTotalAmountStr;
-                                createOrderAndPayment();
-                                deleteCartItem();
-                                Intent intent = new Intent(PaymentActivity.this, ZaloPayPaymentActivity.class);
-                                intent.putExtra("result", "Thanh toán thành công!");
-                                startActivity(intent);
-                            }
-
-                            @Override
-                            public void onPaymentCanceled(String s, String s1) {
-                                Log.d(TAG, "Payment canceled: " + s);
-                                Intent intent = new Intent(PaymentActivity.this, ZaloPayPaymentActivity.class);
-                                intent.putExtra("result", "Hủy thanh toán!");
-                                startActivity(intent);
-                            }
-
-                            @Override
-                            public void onPaymentError(ZaloPayError zaloPayError, String s, String s1) {
-                                Log.e(TAG, "Payment error: " + zaloPayError.toString()); // Ghi lại thông điệp lỗi
-                                Intent intent = new Intent(PaymentActivity.this, ZaloPayPaymentActivity.class);
-                                intent.putExtra("result", "Thanh toán không thành công: " + zaloPayError.toString());
-                                startActivity(intent);
-                            }
-                        });
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-
             } else {
                 Toast.makeText(this, "Vui lòng chọn phương thức thanh toán", Toast.LENGTH_SHORT).show();
             }
@@ -232,7 +172,7 @@ public class PaymentActivity extends AppCompatActivity implements RateAdapter.On
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        ZaloPaySDK.getInstance().onResult(intent);
+        // ZaloPaySDK.getInstance().onResult(intent); // Removed ZaloPay SDK onResult
     }
 
     @Override
@@ -313,28 +253,18 @@ public class PaymentActivity extends AppCompatActivity implements RateAdapter.On
                         Payment payment = new Payment();
                         payment.setId(UUID.randomUUID().toString());
                         payment.setOrderId(orderId);
-                        payment.setPaymentMethod(checkboxPaymentOnDelivery.isChecked() ? "COD" : "Thanh toan qua ZaloPay"); // Gán phương thức thanh toán
-                        // Kiểm tra nếu thanh toán qua ZaloPay
-                        if (!checkboxPaymentOnDelivery.isChecked()) {
-                            payment.setTransactionId(zalo_transactionId);
-                            payment.setAmount(Double.parseDouble(zaloMoney));
-
-                        } else {
-                            payment.setTransactionId(""); // Để trống nếu không phải thanh toán qua ZaloPay
-                            payment.setAmount(finalTotalAmount);
-                        }
-
-
+                        payment.setPaymentMethod("COD");
+                        payment.setTransactionId("");
+                        payment.setAmount(finalTotalAmount);
                         // Thêm vào Firebase
                         DatabaseReference paymentsRef = FirebaseDatabase.getInstance().getReference("payments");
                         String paymentId = payment.getId();
-
                         paymentsRef.child(paymentId).setValue(payment)
                                 .addOnCompleteListener(paymentTask -> {
                                     if (paymentTask.isSuccessful()) {
                                         // Cập nhật paymentId vào đơn hàng
                                         order.setPaymentId(paymentId);
-                                        ordersRef.child(orderId).setValue(order) // Cập nhật đơn hàng với paymentId
+                                        ordersRef.child(orderId).setValue(order)
                                                 .addOnCompleteListener(updateTask -> {
                                                     if (updateTask.isSuccessful()) {
                                                         Toast.makeText(this, "Đơn hàng đã được tạo thành công!", Toast.LENGTH_SHORT).show();
