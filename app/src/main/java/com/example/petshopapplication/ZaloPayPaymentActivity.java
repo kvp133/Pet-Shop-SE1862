@@ -37,6 +37,4 @@ public class ZaloPayPaymentActivity extends AppCompatActivity {
         intent.getStringExtra("result");
         notification.setText(intent.getStringExtra("result"));
     }
-
-
 }

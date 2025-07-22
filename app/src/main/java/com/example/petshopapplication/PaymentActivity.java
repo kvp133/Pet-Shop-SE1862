@@ -448,11 +448,12 @@ public class PaymentActivity extends AppCompatActivity implements RateAdapter.On
 
                     PaymentAdapter paymentAdapter = new PaymentAdapter(productList, selectedCartItems, PaymentActivity.this);
                     recyclerView.setAdapter(paymentAdapter);
-                    Log.d(TAG, selectedUAddress.toString());
+                    //Log.d(TAG, selectedUAddress.toString());
                     if (selectedUAddress != null) {
+                        Log.d(TAG, selectedUAddress.toString());
                         loadRates(selectedUAddress.getDistrictId(), selectedUAddress.getCityId(), 1, (int) totalAmount, totalWidth, totalHeight, totalLength, totalWeight);
-
                     } else {
+                        Log.d(TAG, "selectedUAddress is null");
                         Toast.makeText(PaymentActivity.this, "Địa chỉ chưa được chọn", Toast.LENGTH_SHORT).show();
                     }
 
