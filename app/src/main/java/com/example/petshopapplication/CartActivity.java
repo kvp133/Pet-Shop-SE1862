@@ -123,12 +123,12 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.OnCar
 
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        cartList.clear(); // Fix duplicate: clear trước khi add lại
                         if (snapshot.exists()) {
                             for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                                 Cart cart = dataSnapshot.getValue(Cart.class);
                                 cartList.add(cart);
                             }
-
 
                             getListProductInCart(cartList);
 
@@ -144,8 +144,8 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.OnCar
     }
 
     public void getListProductInCart(List<Cart> cartList) {
-        cartProductId.clear();
-        productList.clear();
+        cartProductId.clear(); // Fix duplicate
+        productList.clear();   // Fix duplicate
         for (Cart cart : cartList) {
             if (cart != null && cart.getProductId() != null) {
                 cartProductId.add(cart.getProductId());
