@@ -65,17 +65,17 @@
                 android:background="@drawable/input_glass"
                 android:drawableLeft="@drawable/baseline_email_24"
                 android:drawablePadding="8dp"
-                android:fontFamily="@font/poppins_light"
-                android:hint="Nhập địa chỉ email"
-                android:padding="15dp"
-                android:textColor="@android:color/white"
-                android:textColorHint="#B3FFFFFF"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:gravity="center_vertical"
-                android:singleLine="true"
                 android:ellipsize="end"
-                android:scrollHorizontally="true" />
+                android:fontFamily="@font/poppins_light"
+                android:gravity="center_vertical"
+                android:hint="Nhập địa chỉ email"
+                android:padding="10dp"
+                android:scrollHorizontally="true"
+                android:singleLine="true"
+                android:textColor="@color/black"
+                android:textColorHint="#B3242323"
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -95,18 +95,18 @@
                 android:background="@drawable/input_glass"
                 android:drawableLeft="@drawable/baseline_lock_24"
                 android:drawablePadding="8dp"
+                android:ellipsize="end"
                 android:fontFamily="@font/poppins_light"
+                android:gravity="center_vertical"
                 android:hint="Nhập mật khẩu"
                 android:inputType="textPassword"
-                android:padding="15dp"
-                android:textColor="@android:color/white"
-                android:textColorHint="#B3FFFFFF"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:gravity="center_vertical"
+                android:padding="10dp"
+                android:scrollHorizontally="true"
                 android:singleLine="true"
-                android:ellipsize="end"
-                android:scrollHorizontally="true" />
+                android:textColor="@color/black"
+                android:textColorHint="#B3040404"
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
             <CheckBox
                 android:id="@+id/cb_remember"
@@ -116,17 +116,6 @@
                 android:fontFamily="@font/poppins_light"
                 android:text="Nhớ mật khẩu"
                 android:textColor="@color/glass_white_80" />
-
-            <TextView
-                android:id="@+id/tv_forgot_password"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:layout_marginBottom="16dp"
-                android:fontFamily="@font/poppins_light"
-                android:text="Quên mật khẩu?"
-                android:textColor="@color/glass_link_blue"
-                android:textSize="14sp" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_login"
