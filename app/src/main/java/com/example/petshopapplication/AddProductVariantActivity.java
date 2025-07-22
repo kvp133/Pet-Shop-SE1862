@@ -6,7 +6,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
@@ -15,7 +14,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -46,489 +44,489 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
-import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
-
-public class AddProductVariantActivity extends AppCompatActivity implements  ManageSizeAdapter.OnSizeClickEventListener,ColorAdapter.OnColorClickEventListener
-{
-    Dialog dialog_dimension;
-    Button btnShowAddSize;
-    ActivityAddProductVariantBinding binding;
-    PopUpAddVariantSizeColorBinding binding2;
-    FirebaseDatabase database;
-    private Uri selectedImageUri; // To store the selected image URI
-
-    DatabaseReference reference;
-    Dialog dialog;
+public class AddProductVariantActivity extends AppCompatActivity implements ManageSizeAdapter.OnSizeClickEventListener, ColorAdapter.OnColorClickEventListener {
+    private Dialog dialog_dimension;
+    private Dialog dialog;
+    private Dialog dialog2;
+    private ActivityAddProductVariantBinding binding;
+    private PopUpAddVariantSizeColorBinding binding2;
+    private FirebaseDatabase database;
     private FirebaseStorage firebaseStorage;
-    Dialog dialog2;
+    private Uri selectedImageUri;
     private Dimension currentDimension = null;
-    List<Variant> variants = new ArrayList<>();
-    String productName = "";
+    private Size currentSize = null;
+    private Color currentColor = null;
+    private List<Variant> variants = new ArrayList<>();
+    private Product model;
+    private RecyclerView recyclerView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_add_product_variant);
-
         binding = ActivityAddProductVariantBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        binding.imvGoBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        // Initialize RecyclerView
+        recyclerView = findViewById(R.id.recycler_view_2);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(new VariantAdapter(this, new ArrayList<>()));
 
-        int SDK_INT = android.os.Build.VERSION.SDK_INT;
-        if (SDK_INT > 8)
-        {
-            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
-                    .permitAll().build();
-            StrictMode.setThreadPolicy(policy);
-            //your codes here
-
+        // Get Product from Intent
+        model = (Product) getIntent().getSerializableExtra("product");
+        if (model == null) {
+            Toast.makeText(this, "Thiếu dữ liệu sản phẩm", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
         }
+
+        // Initialize Firebase
         database = FirebaseDatabase.getInstance();
         firebaseStorage = FirebaseStorage.getInstance();
-         model = (Product) getIntent().getSerializableExtra("product");
-        System.out.println(ObjectPrinter.print(model));
 
-        if(model == null)
-        {
-           finish();
-        }
-        binding.addPvName.setText(model.getName().toString());
-        binding.addPvButtonAddSizeColor.setOnClickListener(view -> showAddSize());
-        binding.addPvDimension.setOnClickListener(view -> showAddDimension());
-        binding.addPvButton.setOnClickListener(view->addVariant());
+        // Set product name
+        binding.addPvName.setText(model.getName());
+
+        // Set click listeners
+        binding.imvGoBack.setOnClickListener(v -> finish());
+        binding.addPvButtonAddSizeColor.setOnClickListener(v -> showAddSize());
+        binding.addPvDimension.setOnClickListener(v -> showAddDimension());
+        binding.addPvButton.setOnClickListener(v -> addVariant());
+
         initVariants();
     }
-    Product model;
-    private void addVariant()
-    {
-        if(currentDimension == null)
-        {
-            Toast.makeText(AddProductVariantActivity.this, "Please set dimension", Toast.LENGTH_SHORT).show();
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // Dismiss dialogs to prevent memory leaks
+        if (dialog != null && dialog.isShowing()) dialog.dismiss();
+        if (dialog2 != null && dialog2.isShowing()) dialog2.dismiss();
+        if (dialog_dimension != null && dialog_dimension.isShowing()) dialog_dimension.dismiss();
+    }
+
+    private void addVariant() {
+        if (currentDimension == null) {
+            Toast.makeText(this, "Vui lòng chọn kích thước", Toast.LENGTH_SHORT).show();
+            return;
         }
-        if(variants.isEmpty())
-        {
+
+        if (variants.isEmpty()) {
             Variant base = new Variant();
+            base.setId(UUID.randomUUID().toString());
             base.setDimension(currentDimension);
             base.setSize(null);
-        }
-        else {
-            for(Variant variant:variants)
-            {
+            base.setPrice(model.getBasePrice());
+            base.setListColor(new ArrayList<>());
+            base.setStock(0);
+            base.setDeliveringQuantity(0);
+            variants.add(base);
+        } else {
+            for (Variant variant : variants) {
                 variant.setPrice(model.getBasePrice());
                 variant.setDimension(currentDimension);
             }
             model.setListVariant(variants);
         }
+
         DatabaseReference productRef = database.getReference("products");
+        String productId = "product-" + productRef.push().getKey();
+        model.setId(productId);
 
-        String feedbackId = "product-" + productRef.push().getKey(); // Generate a unique ID
-        model.setId(feedbackId);
-
-
-        productRef.child(feedbackId).setValue(model)
-                .addOnSuccessListener(aVoid -> {
-                    Toast.makeText(this, "Product submitted successfully!", Toast.LENGTH_SHORT).show();
-                })
-
-                .addOnFailureListener(e -> Toast.makeText(this, "Failed to submit product.", Toast.LENGTH_SHORT).show());
+        productRef.child(productId).setValue(model)
+                .addOnSuccessListener(aVoid -> Toast.makeText(this, "Lưu sản phẩm thành công!", Toast.LENGTH_SHORT).show())
+                .addOnFailureListener(e -> Toast.makeText(this, "Lưu sản phẩm thất bại.", Toast.LENGTH_SHORT).show());
     }
-    private void initVariants()
-    {
-        System.out.println(ObjectPrinter.print(variants));
-        if(!variants.isEmpty())
-        {
+
+    private void initVariants() {
+        if (!variants.isEmpty()) {
             binding.addPvStock.setEnabled(false);
             binding.addPvStock.setVisibility(View.GONE);
             binding.noItemsTextView.setVisibility(View.GONE);
             binding.recyclerView2.setVisibility(View.VISIBLE);
-        }
-        else
-        {
+        } else {
             binding.recyclerView2.setVisibility(View.GONE);
             binding.noItemsTextView.setVisibility(View.VISIBLE);
-
         }
-        RecyclerView recyclerView = findViewById(R.id.recycler_view_2);
 
-        // Set layout manager
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        // Create sample data for the adapter
         List<ItemModel> itemList = new ArrayList<>();
-        for(Variant variant : variants)
-        {
-            for(Color color : variant.getListColor())
-            {
-                itemList.add(new ItemModel(variant.getSize().getName(),
-                        R.drawable.arrow,color.getName(),color  .getStock()));
+        for (Variant variant : variants) {
+            if (variant.getListColor() != null) {
+                for (Color color : variant.getListColor()) {
+                    itemList.add(new ItemModel(
+                            variant.getSize() != null ? variant.getSize().getName() : "",
+                            R.drawable.arrow,
+                            color.getName(),
+                            color.getStock()
+                    ));
+                }
             }
         }
-        // Initialize the custom adapter and set it to the RecyclerView
+
         VariantAdapter adapter = new VariantAdapter(this, itemList);
         recyclerView.setAdapter(adapter);
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 100 && resultCode == RESULT_OK && data != null && data.getData() != null) {
-            selectedImageUri = data.getData(); // Save the selected image URI
-            binding2.addProductUploadImage.setImageURI(selectedImageUri); // Display the selected image
-        }
+//        if (requestCode == 100 && resultCode == RESULT_OK && data != null && data.getData() != null) {
+//            selectedImageUri = data.getData();
+//            binding2.addProductUploadImage.setImageURI(selectedImageUri);
+//        }
     }
 
     private void chooseImage() {
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        startActivityIfNeeded(intent, 100);
+        startActivityForResult(intent, 100);
+    }
+
+    private boolean validateDimensionInputs(PopUpAddVariantDimnesionBinding binding) {
+        try {
+            int height = Integer.parseInt(binding.editHeight.getText().toString());
+            int width = Integer.parseInt(binding.editWidth.getText().toString());
+            int length = Integer.parseInt(binding.editLength.getText().toString());
+            int weight = Integer.parseInt(binding.editWeight.getText().toString());
+            return height > 0 && width > 0 && length > 0 && weight > 0;
+        } catch (NumberFormatException e) {
+            return false;
+        }
     }
 
     private void showAddDimension() {
-        dialog_dimension = new Dialog(AddProductVariantActivity.this);
-
-
-        dialog_dimension.setContentView(R.layout.pop_up_add_variant_dimnesion);
-        PopUpAddVariantDimnesionBinding bindingDimension =
-                PopUpAddVariantDimnesionBinding.inflate(getLayoutInflater());
+        dialog_dimension = new Dialog(this);
+        PopUpAddVariantDimnesionBinding bindingDimension = PopUpAddVariantDimnesionBinding.inflate(getLayoutInflater());
         dialog_dimension.setContentView(bindingDimension.getRoot());
         dialog_dimension.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        Button btnSubmit = dialog_dimension.findViewById(R.id.btn_submit_dimension);
-        if(currentDimension!=null)
-        {
+
+        if (currentDimension != null) {
             bindingDimension.editHeight.setText(String.valueOf(currentDimension.getHeight()));
             bindingDimension.editWidth.setText(String.valueOf(currentDimension.getWidth()));
             bindingDimension.editLength.setText(String.valueOf(currentDimension.getLength()));
             bindingDimension.editWeight.setText(String.valueOf(currentDimension.getWeight()));
         }
-        btnSubmit.setOnClickListener(viewCurrent ->
-        {
-            currentDimension = new Dimension();
 
+        Button btnSubmit = bindingDimension.btnSubmitDimension;
+        btnSubmit.setOnClickListener(v -> {
+            if (!validateDimensionInputs(bindingDimension)) {
+                Toast.makeText(this, "Vui lòng nhập đầy đủ và đúng định dạng kích thước", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            currentDimension = new Dimension();
             currentDimension.setHeight(Integer.parseInt(bindingDimension.editHeight.getText().toString()));
             currentDimension.setLength(Integer.parseInt(bindingDimension.editLength.getText().toString()));
             currentDimension.setWidth(Integer.parseInt(bindingDimension.editWidth.getText().toString()));
             currentDimension.setWeight(Integer.parseInt(bindingDimension.editWeight.getText().toString()));
-            Toast.makeText(AddProductVariantActivity.this, "Add successfully", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Thêm kích thước thành công", Toast.LENGTH_SHORT).show();
             dialog_dimension.dismiss();
         });
+
         dialog_dimension.show();
-
     }
-    private void showAddSize(){
-        dialog = new Dialog(AddProductVariantActivity.this);
-        dialog.setContentView(R.layout.pop_up_add_variant_size_color);
-        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
-// Create binding BEFORE showing the dialog
+    private void showAddSize() {
+        dialog = new Dialog(this);
         binding2 = PopUpAddVariantSizeColorBinding.inflate(getLayoutInflater());
         dialog.setContentView(binding2.getRoot());
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
-        dialog.show();
         initSize(dialog);
         initColor(dialog);
-        binding2.addProductUploadImage.setOnClickListener(view -> chooseImage());
+//        binding2.addProductUploadImage.setOnClickListener(v -> chooseImage());
 
-
-        binding2.btnSubmit.setOnClickListener(view -> {
-            //reference =  database.getReference("list");
+        binding2.btnSubmit.setOnClickListener(v -> {
             if (currentColor == null || currentSize == null) {
-                Toast.makeText(AddProductVariantActivity.this, "Please select color or size.", Toast.LENGTH_SHORT).show();
-            } else if (binding2.editTextText.getText().toString().equals("0")) {
-                Toast.makeText(AddProductVariantActivity.this, "Please enter stock size.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Vui lòng chọn màu sắc và kích thước", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            String stockText = binding2.editTextText.getText().toString();
+            if (stockText.isEmpty() || stockText.equals("0")) {
+                Toast.makeText(this, "Vui lòng nhập số lượng tồn kho hợp lệ", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            int stock;
+            try {
+                stock = Integer.parseInt(stockText);
+            } catch (NumberFormatException e) {
+                Toast.makeText(this, "Số lượng tồn kho không hợp lệ", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            List<Variant> found = variants.stream()
+                    .filter(x -> x.getSize() != null && x.getSize().getName().equals(currentSize.getName()))
+                    .collect(Collectors.toList());
+
+            if (found.isEmpty()) {
+                Variant newVariant = new Variant();
+                newVariant.setId(UUID.randomUUID().toString());
+                newVariant.setSize(currentSize);
+                newVariant.setDeleted(false);
+                newVariant.setDimension(null);
+                newVariant.setStock(stock);
+                newVariant.setPrice(0);
+                newVariant.setDeliveringQuantity(0);
+
+                Color newColor = new Color();
+                newColor.setId(currentColor.getId());
+                newColor.setName(currentColor.getName());
+                newColor.setStock(stock);
+
+                handleImageUpload(newVariant, newColor);
             } else {
-                List<Variant> found = variants.stream().filter(x -> x.getSize().getName().equals(currentSize.getName())).collect(Collectors.toList());
-                Color newColor = currentColor;
-                CountDownLatch latch = new CountDownLatch(1); // Synchronization mechanism
+                Variant updateVariant = found.get(0);
+                List<Color> colors = new ArrayList<>(updateVariant.getListColor() != null ? updateVariant.getListColor() : new ArrayList<>());
+                Color existingColor = colors.stream()
+                        .filter(c -> c.getId().equals(currentColor.getId()))
+                        .findFirst()
+                        .orElse(null);
 
-                if (found.isEmpty()) {
-                    Variant newva = new Variant();
-                    newva.setId(UUID.randomUUID().toString());
-                    newva.setSize(currentSize);
-                    newva.setDeleted(false);
-                    newva.setDimension(null);
-                    newva.setStock(Integer.parseInt(binding2.editTextText.getText().toString()));
-                    newColor.setStock(Integer.parseInt(binding2.editTextText.getText().toString()));
-
-                    if (selectedImageUri != null) {
-                        binding2.btnSubmit.setEnabled(false);
-
-                        // Upload the image to Firebase Storage
-                        StorageReference storageReference = firebaseStorage.getReference().child("product_images/" + UUID.randomUUID().toString());
-                        storageReference.putFile(selectedImageUri)
-                                .addOnSuccessListener(taskSnapshot -> {
-                                    storageReference.getDownloadUrl().addOnSuccessListener(uri -> {
-                                        String imageUrl = uri.toString();
-                                        newColor.setImageUrl(imageUrl);
-                                        newva.setListColor(List.of(newColor));
-                                        newva.setPrice(0);
-                                        newva.setDeliveringQuantity(0);
-                                        variants.add(newva);
-                                        binding2.btnSubmit.setEnabled(true);
-                                        latch.countDown(); // Decrease latch count
-                                    });
-                                }).addOnFailureListener(e -> latch.countDown()); // Handle failure and decrease latch count
-                    } else {
-                        newColor.setImageUrl(null);
-                        newva.setListColor(List.of(newColor));
-                        newva.setPrice(0);
-                        newva.setDeliveringQuantity(0);
-                        variants.add(newva);
-                        latch.countDown(); // Decrease latch count immediately
-                    }
-
+                if (existingColor != null) {
+                    int colorIndex = colors.indexOf(existingColor);
+                    updateVariant.setStock(updateVariant.getStock() - existingColor.getStock() + stock);
+                    existingColor.setStock(stock);
+                    handleImageUpload(updateVariant, existingColor, colors, colorIndex);
                 } else {
-                    Variant updateVar = found.get(0);
-                    List<Color> colors = new ArrayList<>(updateVar.getListColor());
-                    if (colors.stream().anyMatch(x -> x.getId().equals(currentColor.getId()))) {
-                        Color updateColor = colors.stream().filter(x -> x.getId().equals(currentColor.getId())).findFirst().get();
-                        int colorIndex = colors.indexOf(updateColor);
-                        updateVar.setStock(updateVar.getStock() - updateColor.getStock() + Integer.parseInt(binding2.editTextText.getText().toString()));
-
-                        if (selectedImageUri != null) {
-                            binding2.btnSubmit.setEnabled(false);
-                            StorageReference storageReference = firebaseStorage.getReference().child("product_images/" + UUID.randomUUID().toString());
-                            storageReference.putFile(selectedImageUri)
-                                    .addOnSuccessListener(taskSnapshot -> {
-                                        storageReference.getDownloadUrl().addOnSuccessListener(uri -> {
-                                            String imageUrl = uri.toString();
-                                            updateColor.setImageUrl(imageUrl);
-                                            updateColor.setStock(Integer.parseInt(binding2.editTextText.getText().toString()));
-                                            colors.set(colorIndex, updateColor);
-                                            updateVar.setListColor(colors);
-                                            binding2.btnSubmit.setEnabled(true);
-                                            latch.countDown(); // Decrease latch count
-                                        });
-                                    }).addOnFailureListener(e -> latch.countDown()); // Handle failure and decrease latch count
-                        } else {
-                            newColor.setImageUrl(null);
-                            updateColor.setStock(Integer.parseInt(binding2.editTextText.getText().toString()));
-                            colors.set(colorIndex, updateColor);
-                            updateVar.setListColor(colors);
-                            latch.countDown(); // Decrease latch count immediately
-                        }
-
-                    } else {
-                        if (selectedImageUri != null) {
-                            binding2.btnSubmit.setEnabled(false);
-                            StorageReference storageReference = firebaseStorage.getReference().child("product_images/" + UUID.randomUUID().toString());
-                            storageReference.putFile(selectedImageUri)
-                                    .addOnSuccessListener(taskSnapshot -> {
-                                        storageReference.getDownloadUrl().addOnSuccessListener(uri -> {
-                                            String imageUrl = uri.toString();
-                                            currentColor.setImageUrl(imageUrl);
-                                            colors.add(currentColor);
-                                            updateVar.setListColor(colors);
-                                            currentColor.setStock(Integer.parseInt(binding2.editTextText.getText().toString()));
-                                            updateVar.setStock(updateVar.getStock() + currentColor.getStock());
-                                            binding2.btnSubmit.setEnabled(true);
-                                            latch.countDown(); // Decrease latch count
-                                        });
-                                    }).addOnFailureListener(e -> latch.countDown()); // Handle failure and decrease latch count
-                        } else {
-                            newColor.setImageUrl(null);
-                            colors.add(currentColor);
-                            updateVar.setListColor(colors);
-                            currentColor.setStock(Integer.parseInt(binding2.editTextText.getText().toString()));
-                            updateVar.setStock(updateVar.getStock() + currentColor.getStock());
-                            latch.countDown(); // Decrease latch count immediately
-                        }
-                    }
-
-                    int index = variants.indexOf(updateVar);
-                    if (index != -1) {
-                        variants.set(index, updateVar);
-                    }
+                    Color newColor = new Color();
+                    newColor.setId(currentColor.getId());
+                    newColor.setName(currentColor.getName());
+                    newColor.setStock(stock);
+                    colors.add(newColor);
+                    updateVariant.setStock(updateVariant.getStock() + stock);
+                    handleImageUpload(updateVariant, newColor, colors, -1);
                 }
-                Toast.makeText(AddProductVariantActivity.this, "Submitting. Please wait...", Toast.LENGTH_SHORT).show();
-
-                // Wait for all asynchronous operations to complete before dismissing the dialog
-                new Thread(() -> {
-                    try {
-                        latch.await(); // Wait until latch count reaches zero
-                        runOnUiThread(() -> {
-                            Toast.makeText(AddProductVariantActivity.this, "Submit color and size success", Toast.LENGTH_SHORT).show();
-                            currentColor = null;
-                            currentSize = null;
-                            dialog.dismiss();
-                            initVariants();
-                        });
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }).start();
             }
         });
 
-        binding2.btnAddSize.setOnClickListener(view -> {
-            dialog2 = new Dialog(AddProductVariantActivity.this);
+        binding2.btnAddSize.setOnClickListener(v -> {
+            dialog2 = new Dialog(this);
             dialog2.setContentView(R.layout.pop_up_add_variant_size);
             dialog2.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             dialog2.show();
+
             Button btnConfirm = dialog2.findViewById(R.id.btn_submit_name);
-            btnConfirm.setOnClickListener(view2->
-            {
+            btnConfirm.setOnClickListener(v2 -> {
                 EditText txtName = dialog2.findViewById(R.id.edit_size);
-                if(!txtName.getText().equals("")) {
-                    DatabaseReference ref = database.getReference("Size");
-
-                    String id = "size-" + ref.push().getKey(); // Generate a unique ID
-                    Size size = new Size();
-                    size.setId(id);
-                    size.setName(txtName.getText().toString());
-                    ref.child(id).setValue(size)
-                            .addOnSuccessListener(aVoid ->
-                                    {
-                                        dialog2.dismiss();
-                                        initSize(dialog);
-                                        Toast.makeText(AddProductVariantActivity.this, "Size submitted successfully!", Toast.LENGTH_SHORT).show();
-
-                                    })
-                            .addOnFailureListener(e ->
-                                    {
-                                        dialog2.dismiss();
-                                        initSize(dialog);
-                                        Toast.makeText(AddProductVariantActivity.this, "Failed to submit size.", Toast.LENGTH_SHORT).show();
-                                    });
-
-                }
-                else
-                {
+                String sizeName = txtName.getText().toString().trim();
+                if (sizeName.isEmpty()) {
+                    Toast.makeText(this, "Vui lòng nhập tên kích thước", Toast.LENGTH_SHORT).show();
                     dialog2.dismiss();
-                    initSize(dialog);
+                    return;
                 }
-            });
 
+                DatabaseReference sizeRef = database.getReference("Size");
+                String id = "size-" + sizeRef.push().getKey();
+                Size size = new Size();
+                size.setId(id);
+                size.setName(sizeName);
+
+                sizeRef.child(id).setValue(size)
+                        .addOnSuccessListener(aVoid -> {
+                            dialog2.dismiss();
+                            initSize(dialog);
+                            Toast.makeText(this, "Thêm kích thước thành công!", Toast.LENGTH_SHORT).show();
+                        })
+                        .addOnFailureListener(e -> {
+                            dialog2.dismiss();
+                            initSize(dialog);
+                            Toast.makeText(this, "Thêm kích thước thất bại", Toast.LENGTH_SHORT).show();
+                        });
+            });
         });
+
+        dialog.show();
     }
-    RecyclerView colorCartRecyclerView, sizeCartRecyclerView;
-    public static Bitmap getBitmapFromURL(String src) {
-        try {
-            Log.e("src",src);
-            URL url = new URL(src);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setDoInput(true);
-            connection.connect();
-            InputStream input = connection.getInputStream();
-            Bitmap myBitmap = BitmapFactory.decodeStream(input);
-            Log.e("Bitmap","returned");
-            return myBitmap;
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            e.printStackTrace();
-            Log.e("Exception",e.getMessage());
-            return null;
+
+    private void handleImageUpload(Variant variant, Color color, List<Color> colors, int colorIndex) {
+        if (selectedImageUri != null) {
+            binding2.btnSubmit.setEnabled(false);
+            StorageReference storageReference = firebaseStorage.getReference().child("product_images/" + UUID.randomUUID().toString());
+            storageReference.putFile(selectedImageUri)
+                    .addOnSuccessListener(taskSnapshot -> storageReference.getDownloadUrl().addOnSuccessListener(uri -> {
+                        color.setImageUrl(uri.toString());
+                        if (colorIndex >= 0) {
+                            colors.set(colorIndex, color);
+                        } else {
+                            variant.setListColor(colors.isEmpty() ? List.of(color) : colors);
+                        }
+                        updateVariantList(variant);
+                        binding2.btnSubmit.setEnabled(true);
+                        Toast.makeText(this, "Thêm thành công", Toast.LENGTH_SHORT).show();
+                        resetDialog();
+                    }))
+                    .addOnFailureListener(e -> {
+                        binding2.btnSubmit.setEnabled(true);
+                        Toast.makeText(this, "Tải hình ảnh thất bại", Toast.LENGTH_SHORT).show();
+                    });
+        } else {
+            color.setImageUrl(null);
+            if (colorIndex >= 0) {
+                colors.set(colorIndex, color);
+            } else {
+                variant.setListColor(colors.isEmpty() ? List.of(color) : colors);
+            }
+            updateVariantList(variant);
+            Toast.makeText(this, "Thêm thành công", Toast.LENGTH_SHORT).show();
+            resetDialog();
         }
     }
-    private void initSize(Dialog dialog)
-    {
-        List<Size> sizeItems = new ArrayList<>();
-        reference =  database.getReference("Size");
-        Query query = reference.orderByChild("id");
-        query.addListenerForSingleValueEvent(new ValueEventListener() {
 
+    private void handleImageUpload(Variant variant, Color color) {
+        handleImageUpload(variant, color, new ArrayList<>(), -1);
+    }
+
+    private void updateVariantList(Variant variant) {
+        int index = variants.indexOf(variant);
+        if (index >= 0) {
+            variants.set(index, variant);
+        } else {
+            variants.add(variant);
+        }
+        initVariants();
+    }
+
+    private void resetDialog() {
+        currentColor = null;
+        currentSize = null;
+        selectedImageUri = null;
+        binding2.editTextText.setText("0");
+//        binding2.addProductUploadImage.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.upload_img));
+        dialog.dismiss();
+    }
+
+    private void initSize(Dialog dialog) {
+        List<Size> sizeItems = new ArrayList<>();
+        DatabaseReference sizeRef = database.getReference("Size");
+        Query query = sizeRef.orderByChild("id");
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.exists()) {
+                if (snapshot.exists()) {
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                        sizeItems.add(dataSnapshot.getValue(Size.class));
+                        Size size = dataSnapshot.getValue(Size.class);
+                        if (size != null) sizeItems.add(size);
                     }
                     ManageSizeAdapter sizeAdapter = new ManageSizeAdapter(sizeItems, AddProductVariantActivity.this);
-                    sizeCartRecyclerView = dialog.findViewById(R.id.rcv_size);
+                    RecyclerView sizeCartRecyclerView = dialog.findViewById(R.id.rcv_size);
                     sizeCartRecyclerView.setLayoutManager(new GridLayoutManager(AddProductVariantActivity.this, 2));
                     sizeCartRecyclerView.setAdapter(sizeAdapter);
-
+                }
             }
-        }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                Toast.makeText(AddProductVariantActivity.this, "Lỗi khi tải kích thước", Toast.LENGTH_SHORT).show();
             }
         });
-
-
     }
-    Size currentSize = null;
+
+    private void initColor(Dialog dialog) {
+        List<Color> colorItems = new ArrayList<>();
+        DatabaseReference colorRef = database.getReference("Color");
+        colorRef.orderByChild("id").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                        Color color = dataSnapshot.getValue(Color.class);
+                        if (color != null) colorItems.add(color);
+                    }
+                    ColorAdapter colorAdapter = new ColorAdapter(colorItems, AddProductVariantActivity.this);
+                    RecyclerView colorCartRecyclerView = dialog.findViewById(R.id.rcv_color);
+                    colorCartRecyclerView.setLayoutManager(new GridLayoutManager(AddProductVariantActivity.this, 1));
+                    colorCartRecyclerView.setAdapter(colorAdapter);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(AddProductVariantActivity.this, "Lỗi khi tải màu sắc", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
     @Override
     public void onSizeClickEvent(Size size) {
         currentSize = size;
         if (currentColor != null) onColorClick(currentColor);
-
     }
 
-    private void initColor(Dialog dialog)
-    {
-        List<Color> colorItems = new ArrayList<>();
-        Color color = new Color();
-        color.setId("1");
-        color.setName("Tuna");
-        color.setImageUrl("https://firebasestorage.googleapis.com/v0/b/pet-shop-a220c.appspot.com/o/per-food-4.png?alt=media&token=2672b45a-80c6-4011-b28a-6fbd97806498");
-        colorItems.add(color);
-        Color color2 = new Color();
-
-        color2.setId("2");
-        color2.setName("Salmon2");
-        color2.setImageUrl("https://firebasestorage.googleapis.com/v0/b/pet-shop-a220c.appspot.com/o/per-food-4.png?alt=media&token=2672b45a-80c6-4011-b28a-6fbd97806498");
-        colorItems.add(color2);
-
-        ColorAdapter colorAdapter = new ColorAdapter(colorItems,AddProductVariantActivity.this);
-        colorCartRecyclerView = dialog.findViewById(R.id.rcv_color);
-        colorCartRecyclerView.setLayoutManager(new GridLayoutManager(AddProductVariantActivity.this, 1));
-        colorCartRecyclerView.setAdapter(colorAdapter);
-    }
-    private Color currentColor = null;
     @Override
     public void onColorClick(Color color) {
         currentColor = color;
-        if(currentSize !=null)
-        {
-            List<Variant> variantss = variants.stream().filter(x->x.getSize().getName().equals(currentSize.getName())).collect(Collectors.toList());
-            if(!variantss.isEmpty()) {
+        if (currentSize != null) {
+            List<Variant> variantss = variants.stream()
+                    .filter(x -> x.getSize() != null && x.getSize().getName().equals(currentSize.getName()))
+                    .collect(Collectors.toList());
+            if (!variantss.isEmpty()) {
                 List<Color> colors = variantss.get(0).getListColor();
-                if (colors.stream().anyMatch(x -> Objects.equals(x.getId(), currentColor.getId()))) {
-                    EditText ed = dialog.findViewById(R.id.editTextText);
-                    Color currentco = colors.stream().filter(x -> Objects.equals(x.getId(), currentColor.getId())).findFirst().get();
-                    ed.setText(String.valueOf(colors.stream().filter(x -> Objects.equals(x.getId(), currentColor.getId())).findFirst().get().getStock()));
-                    if (currentco.getImageUrl() != null)
-                    {
-                        selectedImageUri = Uri.parse(currentco.getImageUrl());
-
-                        binding2.addProductUploadImage.setImageBitmap(getBitmapFromURL(String.valueOf(selectedImageUri)));
+                if (colors != null && colors.stream().anyMatch(c -> c.getId().equals(currentColor.getId()))) {
+                    Color currentCo = colors.stream()
+                            .filter(c -> c.getId().equals(currentColor.getId()))
+                            .findFirst()
+                            .orElse(null);
+                    if (currentCo != null) {
+                        binding2.editTextText.setText(String.valueOf(currentCo.getStock()));
+//                        if (currentCo.getImageUrl() != null) {
+//                            selectedImageUri = Uri.parse(currentCo.getImageUrl());
+//                            loadImageAsync(currentCo.getImageUrl());
+//                        } else {
+//                            resetImage();
+//                        }
                     }
-                    else
-                        resetImage();
-                } else resetQuantity();
-            } else resetQuantity();
-        } else resetQuantity();
+                } else {
+                    resetQuantity();
+                }
+            } else {
+                resetQuantity();
+            }
+        } else {
+            resetQuantity();
+        }
     }
 
-    public void resetQuantity() {
-        EditText ed = dialog.findViewById(R.id.editTextText);
-        ed.setText("0");
-        resetImage();
+    private void resetQuantity() {
+        binding2.editTextText.setText("0");
+//        resetImage();
     }
-    public void resetImage() {
-        selectedImageUri = null;
-        binding2.addProductUploadImage.setImageURI(null);
-        binding2.addProductUploadImage.setImageBitmap(null);
-        binding2.addProductUploadImage.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.upload_img));
-    }
+
+//    private void resetImage() {
+//        selectedImageUri = null;
+//        binding2.addProductUploadImage.setImageURI(null);
+//        binding2.addProductUploadImage.setImageBitmap(null);
+//        binding2.addProductUploadImage.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.upload_img));
+//    }
+
+//    private void loadImageAsync(String url) {
+//        Executor executor = Executors.newSingleThreadExecutor();
+//        executor.execute(() -> {
+//            Bitmap bitmap = getBitmapFromURL(url);
+//            runOnUiThread(() -> binding2.addProductUploadImage.setImageBitmap(bitmap));
+//        });
+//    }
+
+//    public static Bitmap getBitmapFromURL(String src) {
+//        try {
+//            URL url = new URL(src);
+//            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+//            connection.setDoInput(true);
+//            connection.connect();
+//            InputStream input = connection.getInputStream();
+//            return BitmapFactory.decodeStream(input);
+//        } catch (Exception e) {
+//            Log.e("BitmapError", "Lỗi tải hình ảnh: " + e.getMessage());
+//            return null;
+//        }
+//    }
 }
