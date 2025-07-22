@@ -10,8 +10,10 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.core.view.GravityCompat;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -23,8 +25,6 @@ import android.view.Window;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
-import android.content.Intent;
-import androidx.appcompat.app.AlertDialog;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -44,13 +44,23 @@ public class ViewAdminDashBoardActivity extends AppCompatActivity implements Nav
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_view_admin_dash_board);
 
+        // Initialize Firebase Auth
         firebaseAuth = FirebaseAuth.getInstance();
+        
+        // Check if user is logged in
+        if (firebaseAuth.getCurrentUser() == null) {
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+            finish();
+            return;
+        }
+
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         drawerLayout = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener((NavigationView.OnNavigationItemSelectedListener) this);
+        navigationView.setNavigationItemSelectedListener(this);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open_nav,
                 R.string.close_nav);
         drawerLayout.addDrawerListener(toggle);
@@ -61,6 +71,10 @@ public class ViewAdminDashBoardActivity extends AppCompatActivity implements Nav
         }
 
         replaceFragment(new AdminDashBoardFragment());
+
+        // Handle back button to close drawer
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu);
 
         bottomNavigationView.setBackground(null);
         bottomNavigationView.setOnItemSelectedListener(item -> {
@@ -87,6 +101,12 @@ public class ViewAdminDashBoardActivity extends AppCompatActivity implements Nav
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.frame_layout, fragment);
         fragmentTransaction.commit();
+    }
+
+    private void closeDrawer() {
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START);
+        }
     }
 
     private void showBottomDialog() {
@@ -148,36 +168,60 @@ public class ViewAdminDashBoardActivity extends AppCompatActivity implements Nav
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int itemId = item.getItemId();
-
-        if (itemId == R.id.ad_nav_logout) {
-            // Hiển thị hộp thoại xác nhận trước khi đăng xuất
-            new AlertDialog.Builder(this)
-                    .setTitle("Đăng xuất")
-                    .setMessage("Bạn có chắc chắn muốn đăng xuất không?")
-                    .setPositiveButton("Có", (dialog, which) -> {
-                        // Đăng xuất khỏi Firebase
-                        firebaseAuth.signOut();
-
-                        // Chuyển về màn hình Login
-                        Intent intent = new Intent(ViewAdminDashBoardActivity.this, LoginActivity.class);
-                        // Xóa hết các Activity cũ khỏi stack để người dùng không thể quay lại
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        startActivity(intent);
-                        Toast.makeText(ViewAdminDashBoardActivity.this, "Đã đăng xuất", Toast.LENGTH_SHORT).show();
-                        finish(); // Đóng Activity hiện tại
-                    })
-                    .setNegativeButton("Không", (dialog, which) -> {
-                        // Đóng hộp thoại nếu người dùng chọn "Không"
-                        dialog.dismiss();
-                    })
-                    .show();
-        } else if (itemId == R.id.ad_nav_home) {
-            // Xử lý khi chọn Home nếu cần
+        
+        if (itemId == R.id.ad_nav_home) {
+            // Handle home navigation
             replaceFragment(new AdminDashBoardFragment());
+            closeDrawer();
+            return true;
+        } else if (itemId == R.id.ad_nav_settings) {
+            // Handle settings
+            Toast.makeText(this, "Settings clicked", Toast.LENGTH_SHORT).show();
+            closeDrawer();
+            return true;
+        } else if (itemId == R.id.ad_nav_share) {
+            // Handle share
+            Toast.makeText(this, "Share clicked", Toast.LENGTH_SHORT).show();
+            closeDrawer();
+            return true;
+        } else if (itemId == R.id.ad_nav_about) {
+            // Handle about us
+            Toast.makeText(this, "About Us clicked", Toast.LENGTH_SHORT).show();
+            closeDrawer();
+            return true;
+        } else if (itemId == R.id.ad_nav_logout) {
+            // Handle logout
+            Toast.makeText(this, "Logging out...", Toast.LENGTH_SHORT).show();
+            firebaseAuth.signOut();
+            Intent intent = new Intent(this, LoginActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
+            return true;
         }
+        
+        return false;
+    }
 
-        // Đóng navigation drawer sau khi chọn
-        drawerLayout.closeDrawers();
-        return true;
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                drawerLayout.closeDrawer(GravityCompat.START);
+            } else {
+                drawerLayout.openDrawer(GravityCompat.START);
+            }
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
     }
 }

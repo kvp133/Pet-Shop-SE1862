@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/glass_bg">
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -41,7 +42,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:backgroundTint="@color/button_background"
+            android:backgroundTint="@color/glass_blue_1"
             android:backgroundTintMode="add"
             android:insetTop="0dp"
             android:insetBottom="0dp"
@@ -55,7 +56,7 @@
         android:text="There is nothing. Please shopping!"
         android:layout_marginTop="50dp"
         android:textSize="20sp"
-        android:textColor="@color/textColorHint"
+        android:textColor="@android:color/white"
         android:visibility="gone"
         android:gravity="center"
         app:layout_constraintEnd_toEndOf="parent"
@@ -66,13 +67,13 @@
         android:id="@+id/rec_cart"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginStart="1dp"
-        android:layout_marginBottom="1dp"
-        android:background="#E9E5E5"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/glass_card"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
@@ -88,7 +89,7 @@
             android:layout_width="50dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="#FDFCFC"
+            android:background="@drawable/glass_card"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/baseline_keyboard_arrow_left_24" />
