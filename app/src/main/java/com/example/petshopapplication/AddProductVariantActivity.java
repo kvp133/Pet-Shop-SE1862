@@ -139,11 +139,20 @@ public class AddProductVariantActivity extends AppCompatActivity implements Mana
         }
 
         DatabaseReference productRef = database.getReference("products");
-        String productId = "product-" + productRef.push().getKey();
-        model.setId(productId);
-
-        productRef.child(productId).setValue(model)
-                .addOnSuccessListener(aVoid -> Toast.makeText(this, "Lưu sản phẩm thành công!", Toast.LENGTH_SHORT).show())
+        // Bạn đang tạo một productId mới ở đây. Nếu bạn đã có product.id từ AddProductActivity, bạn nên dùng nó.
+        // product.setId(productId);
+        // productRef.child(productId).setValue(model)
+        // Nếu model.getId() đã được set từ AddProductActivity, chỉ cần dùng model.getId()
+        productRef.child(model.getId()).setValue(model) // Sử dụng ID đã có của model
+                .addOnSuccessListener(aVoid -> {
+                    Toast.makeText(this, "Lưu sản phẩm thành công!", Toast.LENGTH_SHORT).show();
+                    // --- THÊM PHẦN CHUYỂN HƯỚNG VỀ ĐÂY ---
+                    Intent intent = new Intent(AddProductVariantActivity.this, AdminDashBoardFragment.class); // Thay bằng Activity bạn muốn quay về
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK); // Xóa các Activity cũ trên stack
+                    startActivity(intent);
+                    finish(); // Đóng AddProductVariantActivity
+                    // ------------------------------------
+                })
                 .addOnFailureListener(e -> Toast.makeText(this, "Lưu sản phẩm thất bại.", Toast.LENGTH_SHORT).show());
     }
 
@@ -243,6 +252,36 @@ public class AddProductVariantActivity extends AppCompatActivity implements Mana
         initSize(dialog);
         initColor(dialog);
 //        binding2.addProductUploadImage.setOnClickListener(v -> chooseImage());
+
+        // --- THÊM CÁC LISTENER CHO NÚT TĂNG/GIẢM SỐ LƯỢNG VÀO ĐÂY ---
+        binding2.btnPlus.setOnClickListener(v -> {
+            String currentText = binding2.editTextText.getText().toString();
+            int currentQuantity = 0;
+            try {
+                currentQuantity = Integer.parseInt(currentText);
+            } catch (NumberFormatException e) {
+                // Xử lý nếu có lỗi parse, đặt về 0
+                currentQuantity = 0;
+            }
+            currentQuantity++;
+            binding2.editTextText.setText(String.valueOf(currentQuantity));
+        });
+
+        binding2.btnMinus.setOnClickListener(v -> {
+            String currentText = binding2.editTextText.getText().toString();
+            int currentQuantity = 0;
+            try {
+                currentQuantity = Integer.parseInt(currentText);
+            } catch (NumberFormatException e) {
+                // Xử lý nếu có lỗi parse, đặt về 0
+                currentQuantity = 0;
+            }
+            if (currentQuantity > 0) { // Đảm bảo số lượng không âm
+                currentQuantity--;
+            }
+            binding2.editTextText.setText(String.valueOf(currentQuantity));
+        });
+        // ------------------------------------------------------------------
 
         binding2.btnSubmit.setOnClickListener(v -> {
             if (currentColor == null || currentSize == null) {

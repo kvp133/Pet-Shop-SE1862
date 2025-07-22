@@ -59,32 +59,30 @@
                 android:orientation="vertical"
                 android:layout_gravity="center_horizontal">
 
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Product Name:"
+                    android:textColor="@android:color/white"
+                    android:textSize="18sp"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:layout_marginBottom="4dp" />
+
                 <EditText
                     android:id="@+id/add_pv_name"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:background="@drawable/input_glass"
+                    android:background="@drawable/border_for_edittext"
                     android:gravity="start|center_vertical"
-                    android:hint="Product Name"
                     android:padding="15dp"
-                    android:textColor="@android:color/black"        android:textColorHint="#99000000"   android:fontFamily="@font/poppins_light"
+                    android:textColor="@android:color/black"
+                    android:textColorHint="#99000000"
+                    android:fontFamily="@font/poppins_light"
                     android:textSize="16sp"
-                    android:layout_marginBottom="10dp"
-                    android:enabled="false"/>
-                <EditText
-                    android:id="@+id/add_pv_import_price"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:background="@drawable/input_glass"
-                    android:gravity="start|center_vertical"
-                    android:hint="Import Price"
-                    android:padding="15dp"
-                    android:textColor="@android:color/black"        android:textColorHint="#99000000"   android:fontFamily="@font/poppins_light"
-                    android:textSize="16sp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:inputType="numberDecimal"
-                    android:enabled="false"/>
+                    android:layout_marginBottom="20dp"
+                    android:enabled="false"
+                    tools:text="Sample Product Name" />
+
                 <TextView
                     android:id="@+id/no_items_text_view"
                     android:layout_width="match_parent"
@@ -112,24 +110,17 @@
                         android:scrollbars="vertical" />
                 </FrameLayout>
 
-
-                <LinearLayout
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/add_pv_button_add_size_color"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <androidx.appcompat.widget.AppCompatButton
-                        android:id="@+id/add_pv_button_add_size_color"
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:background="@drawable/button_glass_blue"
-                        android:text="Add Size and Color"
-                        android:textSize="18sp"
-                        android:textColor="@android:color/white"
-                        android:fontFamily="@font/poppins_semibold"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginBottom="8dp" />
-                </LinearLayout>
+                    android:layout_height="50dp"
+                    android:background="@drawable/button_glass_blue"
+                    android:text="Add Size and Color"
+                    android:textSize="18sp"
+                    android:textColor="@android:color/white"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp" />
 
                 <EditText
                     android:id="@+id/add_pv_stock"
@@ -139,12 +130,15 @@
                     android:gravity="start|center_vertical"
                     android:hint="Stock Quantity (Overall)"
                     android:padding="15dp"
-                    android:textColor="@android:color/black"        android:textColorHint="#99000000"   android:fontFamily="@font/poppins_light"
+                    android:textColor="@android:color/black"
+                    android:textColorHint="#99000000"
+                    android:fontFamily="@font/poppins_light"
                     android:textSize="16sp"
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="10dp"
                     android:inputType="number"
                     android:enabled="false"/>
+
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/add_pv_dimension"
                     android:layout_width="match_parent"

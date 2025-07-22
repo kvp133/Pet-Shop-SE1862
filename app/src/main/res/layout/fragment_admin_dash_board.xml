@@ -104,24 +104,13 @@
                         android:padding="16dp">
 
                         <TextView
-                            android:id="@+id/totalUserLabel"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/poppins_semibold"
-                            android:gravity="center"
-                            android:text="Tổng số người dùng"
-                            android:textColor="@android:color/white"
-                            android:textSize="16sp" />
-
-                        <TextView
                             android:id="@+id/totalUserText"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:fontFamily="@font/poppins_semibold"
-                            android:text="0"
-                            android:textColor="@android:color/white"
-                            android:textSize="24sp"
+                            android:gravity="center"
+                            android:text="Tổng số người dùng:\n0"
+                            android:textColor="@color/colorTextLight"
+                            android:textSize="18sp"
                             android:textStyle="bold" />
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
@@ -150,24 +139,13 @@
                         android:padding="16dp">
 
                         <TextView
-                            android:id="@+id/totalProductLabel"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/poppins_semibold"
-                            android:gravity="center"
-                            android:text="Tổng số sản phẩm"
-                            android:textColor="@android:color/white"
-                            android:textSize="16sp" />
-
-                        <TextView
                             android:id="@+id/totalProductText"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:fontFamily="@font/poppins_semibold"
-                            android:text="0"
-                            android:textColor="@android:color/white"
-                            android:textSize="24sp"
+                            android:gravity="center"
+                            android:text="Tổng số sản phẩm:\n0"
+                            android:textColor="@color/colorTextLight"
+                            android:textSize="18sp"
                             android:textStyle="bold" />
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
@@ -196,24 +174,13 @@
                         android:padding="16dp">
 
                         <TextView
-                            android:id="@+id/totalCategoryLabel"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/poppins_semibold"
-                            android:gravity="center"
-                            android:text="Tổng số danh mục"
-                            android:textColor="@android:color/white"
-                            android:textSize="16sp" />
-
-                        <TextView
                             android:id="@+id/totalCategoryText"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:fontFamily="@font/poppins_semibold"
-                            android:text="0"
-                            android:textColor="@android:color/white"
-                            android:textSize="24sp"
+                            android:gravity="center"
+                            android:text="Tổng số danh mục:\n0"
+                            android:textColor="@color/colorTextLight"
+                            android:textSize="18sp"
                             android:textStyle="bold" />
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
@@ -242,24 +209,13 @@
                         android:padding="16dp">
 
                         <TextView
-                            android:id="@+id/totalOrderLabel"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/poppins_semibold"
-                            android:gravity="center"
-                            android:text="Tổng số đơn hàng"
-                            android:textColor="@android:color/white"
-                            android:textSize="16sp" />
-
-                        <TextView
                             android:id="@+id/totalOrderText"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:fontFamily="@font/poppins_semibold"
-                            android:text="0"
-                            android:textColor="@android:color/white"
-                            android:textSize="24sp"
+                            android:gravity="center"
+                            android:text="Tổng số đơn hàng:\n0"
+                            android:textColor="@color/colorTextLight"
+                            android:textSize="18sp"
                             android:textStyle="bold" />
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
