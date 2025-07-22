@@ -1,63 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/fragment_admin_manage_product"
     tools:context=".AdminManageProductFragment"
-    android:background="@drawable/glass_bg"> <LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content" android:orientation="vertical"
-    android:gravity="center"
-    android:padding="24dp"
-    android:background="@drawable/glass_card" android:layout_gravity="center"> <TextView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="Product Management"
-    android:textColor="@android:color/white" android:textSize="28sp"
-    android:textStyle="bold"
-    android:fontFamily="@font/poppins_semibold"
-    android:layout_marginBottom="32dp" />
+    android:background="@drawable/glass_bg">
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btnShowTrendingProduct"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:text="View Top Trending Product"
-        android:textSize="18sp"
-        android:background="@drawable/button_glass_blue" android:textColor="@android:color/white" android:fontFamily="@font/poppins_semibold"
-        android:onClick="openViewTopTrendingProduct" />
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:padding="24dp"
+        android:background="@drawable/glass_card"
+        android:layout_gravity="center">
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btnAddNewProduct"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:text="Add New Product"
-        android:textSize="18sp"
-        android:layout_marginTop="16dp"
-        android:background="@drawable/button_glass_blue" android:textColor="@android:color/white" android:fontFamily="@font/poppins_semibold"
-        android:onClick="openAddProductActivity" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Product Management"
+            android:textColor="@android:color/white"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            android:fontFamily="@font/poppins_semibold"
+            android:layout_marginBottom="32dp" />
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btnViewListProduct"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:text="Update Product"
-        android:background="@drawable/button_glass_blue" android:textSize="18sp"
-        android:layout_marginTop="16dp"
-        android:textColor="@android:color/white" android:fontFamily="@font/poppins_semibold"
-        android:onClick="openUpdateProductActivity" />
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnShowTrendingProduct"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="View Top Trending Product"
+            android:textSize="18sp"
+            android:background="@drawable/button_glass_blue"
+            android:backgroundTint="@color/glass_blue_1"
+            android:textColor="@android:color/white"
+            android:fontFamily="@font/poppins_semibold"
+            android:onClick="openViewTopTrendingProduct" />
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btnManageCategory"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:text="Manage Category"
-        android:background="@drawable/button_glass_blue" android:textSize="18sp"
-        android:layout_marginTop="16dp"
-        android:textColor="@android:color/white" android:fontFamily="@font/poppins_semibold"
-        android:onClick="openManageCategory" />
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnAddNewProduct"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="Add New Product"
+            android:textSize="18sp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/button_glass_blue"
+            android:backgroundTint="@color/glass_blue_1"
+            android:textColor="@android:color/white"
+            android:fontFamily="@font/poppins_semibold"
+            android:onClick="openAddProductActivity" />
 
-</LinearLayout>
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnViewListProduct"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="Update Product"
+            android:background="@drawable/button_glass_blue"
+            android:backgroundTint="@color/glass_blue_1"
+            android:textSize="18sp"
+            android:layout_marginTop="16dp"
+            android:textColor="@android:color/white"
+            android:fontFamily="@font/poppins_semibold"
+            android:onClick="openUpdateProductActivity" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnManageCategory"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="Manage Category"
+            android:background="@drawable/button_glass_blue"
+            android:backgroundTint="@color/glass_blue_1"
+            android:textSize="18sp"
+            android:layout_marginTop="16dp"
+            android:textColor="@android:color/white"
+            android:fontFamily="@font/poppins_semibold"
+            android:onClick="openManageCategory" />
+
+    </LinearLayout>
 
 </FrameLayout>

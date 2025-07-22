@@ -3,6 +3,7 @@ package com.example.petshopapplication;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -84,6 +85,31 @@ public class HomeActivity extends AppCompatActivity {
         binding.tvViewListProduct.setOnClickListener(v -> {
             Intent intent = new Intent(HomeActivity.this, ListProductActivity.class);
             startActivity(intent);
+        });
+
+        binding.btnHomeUserPanel.setOnClickListener(v -> {
+            Intent intent = new Intent(HomeActivity.this, UserPanel.class);
+            startActivity(intent);
+        });
+
+        // Fetch and display user's full name
+        DatabaseReference userRef = database.getReference(getString(R.string.tbl_user_name));
+        Query userQuery = userRef.orderByChild("id").equalTo(userId);
+        userQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                        User userData = dataSnapshot.getValue(User.class);
+                        if (userData != null) {
+                            // Set the user's full name to the TextView at the top
+                            ((TextView) findViewById(R.id.textView3)).setText(userData.getFullName());
+                        }
+                    }
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) { }
         });
     }
 

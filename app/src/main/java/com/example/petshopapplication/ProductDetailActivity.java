@@ -145,10 +145,16 @@ public class ProductDetailActivity extends AppCompatActivity implements ProductI
         btn_plus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int currentQuantity = Integer.parseInt(tv_quantity.getText().toString());
-                int maxStock = Integer.parseInt(tv_cart_stock.getText().toString().replace("Stock: ", ""));
-                if(currentQuantity < maxStock) {
-                    tv_quantity.setText(String.valueOf(currentQuantity + 1));
+                try {
+                    String quantityStr = tv_quantity.getText().toString().trim();
+                    int currentQuantity = quantityStr.isEmpty() ? 1 : Integer.parseInt(quantityStr);
+                    int maxStock = Integer.parseInt(tv_cart_stock.getText().toString().replace("Stock: ", ""));
+                    if(currentQuantity < maxStock) {
+                        tv_quantity.clearFocus();
+                        tv_quantity.setText(String.valueOf(currentQuantity + 1));
+                    }
+                } catch (Exception e) {
+                    tv_quantity.setText("1");
                 }
             }
         });
@@ -156,9 +162,15 @@ public class ProductDetailActivity extends AppCompatActivity implements ProductI
         btn_minus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int currentQuantity = Integer.parseInt(tv_quantity.getText().toString());
-                if(currentQuantity > 1) {
-                    tv_quantity.setText(String.valueOf(currentQuantity - 1));
+                try {
+                    String quantityStr = tv_quantity.getText().toString().trim();
+                    int currentQuantity = quantityStr.isEmpty() ? 1 : Integer.parseInt(quantityStr);
+                    if(currentQuantity > 1) {
+                        tv_quantity.clearFocus();
+                        tv_quantity.setText(String.valueOf(currentQuantity - 1));
+                    }
+                } catch (Exception e) {
+                    tv_quantity.setText("1");
                 }
             }
         });
@@ -197,6 +209,11 @@ public class ProductDetailActivity extends AppCompatActivity implements ProductI
         });
 
         getIntend();
+        if (productId == null || productId.isEmpty()) {
+            Toast.makeText(this, "Product ID is missing!", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
         initProductDetail(productId);
         binding.btnAddCart.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -216,11 +233,27 @@ public class ProductDetailActivity extends AppCompatActivity implements ProductI
     private void confirmCart() {
         //Get current user
         FirebaseUser user = auth.getCurrentUser();
-
+        if (user == null) {
+            Toast.makeText(this, "User not logged in!", Toast.LENGTH_SHORT).show();
+            return;
+        }
         //Get cart quantity
-        int quantity = Integer.parseInt(tv_quantity.getText().toString());
-        int stock = Integer.parseInt(tv_cart_stock.getText().toString().replace("Stock: ", ""));
-
+        int quantity;
+        try {
+            quantity = Integer.parseInt(tv_quantity.getText().toString().trim());
+        } catch (Exception e) {
+            quantity = 1;
+        }
+        int stock;
+        try {
+            stock = Integer.parseInt(tv_cart_stock.getText().toString().replace("Stock: ", "").trim());
+        } catch (Exception e) {
+            stock = 1;
+        }
+        if (productId == null || productId.isEmpty() || selectedVariantId == null || selectedVariantId.isEmpty()) {
+            Toast.makeText(this, "Product or variant is missing!", Toast.LENGTH_SHORT).show();
+            return;
+        }
         reference = database.getReference(getString(R.string.tbl_cart_name));
         String cartId =  reference.push().getKey(); // Generate a unique ID
         //Create cart item
@@ -232,9 +265,6 @@ public class ProductDetailActivity extends AppCompatActivity implements ProductI
                 .selectedColorId(selectedColorId)
                 .selectedVariantId(selectedVariantId)
                 .build();
-
-
-
         checkCart(stock);
     }
 
@@ -250,47 +280,34 @@ public class ProductDetailActivity extends AppCompatActivity implements ProductI
         cartRef.orderByChild("userId").equalTo(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@androidx.annotation.NonNull DataSnapshot snapshot) {
+                boolean isAdded = false;
                 if (snapshot.exists()) {
-                    boolean isAdded = false;
                     //Update cart item
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                         Cart cart = dataSnapshot.getValue(Cart.class);
-                        if (cart.getProductId().equals(productId) && cart.getSelectedVariantId().equals(selectedVariantId)) {
-                            if(cart.getSelectedColorId() != null && cart.getSelectedColorId().equals(selectedColorId)) {
-                                int newQuantity = cart.getQuantity() + cartItem.getQuantity();
-                                if(newQuantity <= stock) {
-                                    cart.setQuantity(newQuantity);
-                                }
-                                //Update cart item
-                                cartRef.child(dataSnapshot.getKey()).setValue(cart);
-                                isAdded = true;
+                        if (cart.getProductId().equals(productId)
+                                && cart.getSelectedVariantId().equals(selectedVariantId)
+                                && ((cart.getSelectedColorId() == null && selectedColorId == null) || (cart.getSelectedColorId() != null && cart.getSelectedColorId().equals(selectedColorId)))) {
+                            int newQuantity = cart.getQuantity() + cartItem.getQuantity();
+                            if(newQuantity <= stock) {
+                                cart.setQuantity(newQuantity);
                             } else {
-                                int newQuantity = cart.getQuantity() + cartItem.getQuantity();
-                                if(newQuantity <= stock) {
-                                    cart.setQuantity(newQuantity);
-                                }
-                                //Update cart item
-                                cartRef.child(dataSnapshot.getKey()).setValue(cart);
-                                isAdded = true;
+                                cart.setQuantity(stock);
                             }
+                            //Update cart item
+                            cartRef.child(dataSnapshot.getKey()).setValue(cart);
+                            isAdded = true;
                             break;
                         }
-
                     }
-                    if(!isAdded) {
-                        String uniqueKey = "cart" + cartRef.push().getKey();
-                        //Create new cart item
-                        cartRef.child(uniqueKey).setValue(cartItem);
-                    }
-                } else {
-                    String uniqueKey = "cart" + cartRef.push().getKey();
-                    //Create new cart item
-                    cartRef.child(uniqueKey).setValue(cartItem);
                 }
-
+                if(!isAdded) {
+                    //Create new cart item
+                    String newCartId = cartRef.push().getKey();
+                    cartItem.setCartId(newCartId);
+                    cartRef.child(newCartId).setValue(cartItem);
+                }
                 Toast.makeText(ProductDetailActivity.this, "Add successfully", Toast.LENGTH_SHORT).show();
-
-
             }
 
             @Override
@@ -311,7 +328,14 @@ public class ProductDetailActivity extends AppCompatActivity implements ProductI
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+
                         Product product = dataSnapshot.getValue(Product.class);
+                         if (product == null) {
+                             Toast.makeText(ProductDetailActivity.this, "Product not found!", Toast.LENGTH_SHORT).show();
+                             finish();
+                             return;
+                         }
+                         binding.tvProductName.setText(product.getName());
 
                         // 1. Khởi tạo và thiết lập adapter ảnh (chỉ hiển thị baseImageURL)
                         fetchProductImage(product);
