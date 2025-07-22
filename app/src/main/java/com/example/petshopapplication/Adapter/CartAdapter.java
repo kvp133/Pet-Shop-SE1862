@@ -246,7 +246,8 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartHolder> {
 
     public class CartHolder extends RecyclerView.ViewHolder {
         TextView tv_item_name, tv_item_type, tv_item_old_price, tv_item_new_price, tv_item_quantity;
-        ImageView imv_item, btn_increase, btn_decrease;
+        ImageView imv_item;
+        Button btn_increase, btn_decrease;
         CheckBox checkBox;
 
         public CartHolder(@NonNull View itemView) {
@@ -260,8 +261,38 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartHolder> {
             btn_decrease = itemView.findViewById(R.id.btn_decrease);
             btn_increase = itemView.findViewById(R.id.btn_increase);
             checkBox = itemView.findViewById(R.id.checkBox);
-
-
+            // Thêm nút xóa
+            Button btn_delete = itemView.findViewById(R.id.btn_delete);
+            btn_delete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION) {
+                        Cart cart = cartList.get(position);
+                        // Xóa cart khỏi Firebase
+                        database = FirebaseDatabase.getInstance();
+                        reference = database.getReference(context.getString(R.string.tbl_cart_name));
+                        reference.orderByChild("cartId").equalTo(cart.getCartId())
+                                .addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                        if (snapshot.exists()) {
+                                            for (DataSnapshot cartSnapshot : snapshot.getChildren()) {
+                                                cartSnapshot.getRef().removeValue();
+                                            }
+                                            // Xóa khỏi list và cập nhật giao diện
+                                            cartList.remove(position);
+                                            notifyItemRemoved(position);
+                                            listener.onCartItemCheckedChanged();
+                                            Toast.makeText(context, "Đã xóa sản phẩm khỏi giỏ hàng", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {}
+                                });
+                    }
+                }
+            });
         }
 
         public void bind(Cart cart, OnItemLongPressListener listener){
