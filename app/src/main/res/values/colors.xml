@@ -1,19 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Basic Colors -->
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="edtColor">#edbea4</color>
+    <color name="edtColor">#edbea4</color> <!-- From first file -->
     <color name="textColorHint">#bf592b</color>
     <color name="button_background">#fe854f</color>
     <color name="grey">#F5F5F5</color>
-    <color name="gray">#7C7B7B</color>
+    <color name="gray">#7C7B7B</color> <!-- Keeping this instead of #f5f5f5 -->
     <color name="yellow">#FFEB3B</color>
-    <color name="red">#E03535</color>
+    <color name="red">#E03535</color> <!-- Keeping this instead of #dc3545 -->
     <color name="deleteText">#8A8989</color>
     <color name="light_grey">#F3F3F3</color>
     <color name="green">#1FA867</color>
     <color name="yellow_star">#FFC106</color>
 
+    <!-- Material Colors -->
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>
     <color name="purple_700">#FF3700B3</color>
@@ -21,14 +23,47 @@
     <color name="teal_700">#FF018786</color>
     <color name="lavender">#8692f7</color>
 
+    <!-- Glassmorphism Colors -->
     <color name="glass_blue_1">#2193b0</color>
     <color name="glass_blue_2">#6dd5ed</color>
     <color name="glass_white_translucent">#80FFFFFF</color>
     <color name="glass_border">#40FFFFFF</color>
-
     <color name="glass_white_80">#CCFFFFFF</color>
     <color name="glass_white_50">#80FFFFFF</color>
     <color name="glass_border_white">#40FFFFFF</color>
     <color name="glass_link_blue">#B3E5FC</color>
+    <color name="glass_white">#f0ffffff</color> <!-- From second file -->
 
+    <!-- Primary Color Palette -->
+    <color name="primary_gradient_start">#667eea</color>
+    <color name="primary_gradient_end">#764ba2</color>
+    <color name="primary_dark">#4a5568</color>
+    <color name="primary_light">#e6fffa</color>
+
+    <!-- Accent Colors -->
+    <color name="accent_orange">#ff6b6b</color>
+    <color name="accent_blue">#4ecdc4</color>
+    <color name="accent_green">#45b7d1</color>
+
+    <!-- Text Colors -->
+    <color name="text_primary">#2d3748</color>
+    <color name="text_secondary">#718096</color>
+    <color name="text_hint">#a0aec0</color>
+
+    <!-- Background Colors -->
+    <color name="background_primary">#f7fafc</color>
+    <color name="background_secondary">#edf2f7</color>
+
+    <!-- Category Colors -->
+    <color name="category_bg_gradient">#e6fffa</color>
+    <color name="category_bg_light">#f0f8ff</color>
+
+    <!-- Status Colors -->
+    <color name="discount_red">#e53e3e</color>
+    <color name="rating_yellow">#ffd700</color>
+    <color name="success_green">#38a169</color>
+
+    <!-- Card Colors -->
+    <color name="card_shadow">#1a202c20</color>
+    <color name="card_border">#e2e8f0</color>
 </resources>

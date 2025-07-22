@@ -71,9 +71,7 @@ public class ListProductAdapter extends RecyclerView.Adapter<ListProductAdapter.
         if(variants != null && !variants.isEmpty()) {
             oldPrice = product.getListVariant().get(0).getPrice();
             //check if product have color variants
-            if(product.getListVariant().get(0).getListColor() != null && !product.getListVariant().get(0).getListColor().isEmpty()) {
-                imageUrl = product.getListVariant().get(0).getListColor().get(0).getImageUrl();
-            }
+
         }
 
         //check if product is discounted
