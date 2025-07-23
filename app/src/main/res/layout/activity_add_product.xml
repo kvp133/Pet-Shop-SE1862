@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:backgroundTint="@color/glass_blue_1"
         android:title="Add Product"
-        app:navigationIcon="@drawable/baseline_arrow_back_24"
+        app:navigationIcon="@drawable/arrow"
         android:theme="@style/ThemeOverlay.Material3.Dark.ActionBar" />
 
     <ScrollView

@@ -4,9 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/add_product_variant"
-    tools:context=".AddProductVariantActivity">
+    android:layout_height="match_parent">
 
     <ImageView
         android:id="@+id/imvGoBack"
@@ -19,21 +17,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/baseline_arrow_back_24"
         app:tint="@android:color/white" />
-
-    <TextView
-        android:id="@+id/tv_title_product_top"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="Add Product Variant"
-        android:textColor="@android:color/white"
-        android:textSize="28sp"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:fontFamily="@font/poppins_semibold"
-        android:layout_marginTop="24dp"
-        app:layout_constraintStart_toEndOf="@+id/imvGoBack"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -63,7 +46,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Product Name:"
-                    android:textColor="@android:color/white"
+                    android:textColor="@android:color/black"
                     android:textSize="18sp"
                     android:fontFamily="@font/poppins_semibold"
                     android:layout_marginBottom="4dp" />
