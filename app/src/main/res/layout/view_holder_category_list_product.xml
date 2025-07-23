@@ -4,38 +4,80 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    >
+    android:layout_margin="8dp">
 
-
-    <LinearLayout
-
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:orientation="vertical"
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/category_card"
+        android:layout_width="100dp"
+        android:layout_height="120dp"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="6dp"
+        app:cardBackgroundColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        android:foreground="?android:attr/selectableItemBackground">
 
-        <ImageView
-            android:id="@+id/imv_cate_image"
-            android:layout_width="90dp"
-            android:layout_height="90dp"
-            android:padding="12dp"
-            android:layout_gravity="center"
-            app:srcCompat="@drawable/baseline_home_24"
-
-            />
-
-        <TextView
-            android:id="@+id/txt_cate_name"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/poppins_semibold"
-            android:text="Title"
-            android:textStyle="bold"
-            android:textAlignment="center"
-            android:textSize="12dp" />
-    </LinearLayout>
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="12dp">
+
+            <!-- Enhanced Category Image Container -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                app:cardCornerRadius="28dp"
+                app:cardElevation="4dp"
+                app:cardBackgroundColor="@color/category_bg_gradient">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/imv_cate_image"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_gravity="center"
+                    android:scaleType="centerInside"
+                    app:srcCompat="@drawable/baseline_pets_24"
+                    tools:ignore="UseAppTint" />
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Category Name -->
+            <TextView
+                android:id="@+id/txt_cate_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/poppins_semibold"
+                android:gravity="center"
+                android:maxLines="2"
+                android:ellipsize="end"
+                android:text="Category"
+                android:textColor="@color/text_primary"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+
+            <!-- Selection Indicator -->
+            <View
+                android:id="@+id/selection_indicator"
+                android:layout_width="24dp"
+                android:layout_height="3dp"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/selection_indicator"
+                android:visibility="invisible" />
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Ripple Effect Overlay -->
+    <View
+        android:id="@+id/ripple_overlay"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/ripple_category_overlay"
+        app:layout_constraintBottom_toBottomOf="@+id/category_card"
+        app:layout_constraintEnd_toEndOf="@+id/category_card"
+        app:layout_constraintStart_toStartOf="@+id/category_card"
+        app:layout_constraintTop_toTopOf="@+id/category_card" />
 </androidx.constraintlayout.widget.ConstraintLayout>

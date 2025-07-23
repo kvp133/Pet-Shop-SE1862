@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,6 +20,7 @@ import com.example.petshopapplication.R;
 import com.example.petshopapplication.model.Category;
 import com.example.petshopapplication.model.FeedBack;
 import com.example.petshopapplication.model.Product;
+import com.example.petshopapplication.model.Variant;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -67,12 +67,11 @@ public class ListProductAdapter extends RecyclerView.Adapter<ListProductAdapter.
         double oldPrice = product.getBasePrice();
         String imageUrl = product.getBaseImageURL();
         //Check if product have variants
-        if(product.getListVariant() != null && !product.getListVariant().isEmpty()) {
+        List<Variant> variants = product.getListVariant();
+        if(variants != null && !variants.isEmpty()) {
             oldPrice = product.getListVariant().get(0).getPrice();
             //check if product have color variants
-            if(product.getListVariant().get(0).getListColor() != null && !product.getListVariant().get(0).getListColor().isEmpty()) {
-                imageUrl = product.getListVariant().get(0).getListColor().get(0).getImageUrl();
-            }
+
         }
 
         //check if product is discounted
@@ -89,12 +88,7 @@ public class ListProductAdapter extends RecyclerView.Adapter<ListProductAdapter.
         }
 
         //Set category
-        Category category = getCategoryById(product.getCategoryId());
-        if (category != null) {
-            holder.tv_category.setText(category.getName());
-        } else {
-            holder.tv_category.setText("");
-        }
+        holder.tv_category.setText(getCategoryById(product.getCategoryId()).getName());
 
         Glide.with(context)
                 .load(imageUrl)
@@ -103,13 +97,9 @@ public class ListProductAdapter extends RecyclerView.Adapter<ListProductAdapter.
 
         holder.itemView.setOnClickListener(v -> {
             // Open product detail activity with product id
-            if (product.getId() != null && !product.getId().isEmpty()) {
-                Intent intent = new Intent(context, ProductDetailActivity.class);
-                intent.putExtra("productId", product.getId());
-                context.startActivity(intent);
-            } else {
-                Toast.makeText(context, "Product ID is missing!", Toast.LENGTH_SHORT).show();
-            }
+            Intent intent = new Intent(context, ProductDetailActivity.class);
+            intent.putExtra("productId", product.getId());
+            context.startActivity(intent);
         });
 
         System.out.println(product);
