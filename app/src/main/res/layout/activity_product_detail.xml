@@ -321,10 +321,6 @@
         </LinearLayout>
     </ScrollView>
 
-<<<<<<< HEAD
-
-=======
->>>>>>> phuockv
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/bottom_bar"
         android:layout_width="0dp"
