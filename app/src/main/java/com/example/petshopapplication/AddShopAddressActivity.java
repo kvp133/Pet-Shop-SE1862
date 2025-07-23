@@ -2,10 +2,7 @@ package com.example.petshopapplication;
 
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Switch;
-import android.widget.TextView;
+import android.widget.AutoCompleteTextView;
 import android.widget.Toast;
 
 import java.util.UUID;
@@ -24,8 +21,10 @@ import com.example.petshopapplication.API_model.Ward;
 import com.example.petshopapplication.API_model.WardResponse;
 import com.example.petshopapplication.databinding.ActivityAddShopAddressBinding;
 import com.example.petshopapplication.model.UAddress;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.switchmaterial.SwitchMaterial;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -47,12 +46,15 @@ public class AddShopAddressActivity extends AppCompatActivity {
     private String selectedDistrictId;
     private int selectedWardId;
 
-    private TextView citySelectButton;
-    private TextView districtSelectButton;
-    private TextView wardSelectButton;
-    private EditText fullNameEditText;
-    private Switch defaultAddressSwitch;
-    private EditText phoneEditText;
+    // Updated UI components to match enhanced layout
+    private AutoCompleteTextView citySelectButton;
+    private AutoCompleteTextView districtSelectButton;
+    private AutoCompleteTextView wardSelectButton;
+    private TextInputEditText fullNameEditText;
+    private TextInputEditText phoneEditText;
+    private SwitchMaterial defaultAddressSwitch;
+    private MaterialToolbar toolbar;
+    private MaterialButton completeButton;
 
     private DatabaseReference addressesRef;
 
@@ -67,27 +69,64 @@ public class AddShopAddressActivity extends AppCompatActivity {
 
         AUTH_TOKEN = "Bearer " + getResources().getString(R.string.goship_api_token);
 
+        initializeViews();
+        setupClickListeners();
+    }
+
+    private void initializeViews() {
+        // Initialize components from enhanced UI
+        toolbar = binding.toolbar;
         citySelectButton = binding.citySelectButton;
         districtSelectButton = binding.districtSelectButton;
         wardSelectButton = binding.wardSelectButton;
         fullNameEditText = binding.fullNameEditText;
         phoneEditText = binding.phoneEditText;
         defaultAddressSwitch = binding.defaultAddressSwitch;
-        Button completeButton = binding.completeButton;
+        completeButton = binding.completeButton;
 
+        // Setup toolbar
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
+
+        // Disable text input for dropdown fields
+        citySelectButton.setKeyListener(null);
+        districtSelectButton.setKeyListener(null);
+        wardSelectButton.setKeyListener(null);
+
+        // Set initial state for dependent dropdowns
+        districtSelectButton.setEnabled(false);
+        wardSelectButton.setEnabled(false);
+    }
+
+    private void setupClickListeners() {
+        // Toolbar navigation
+        toolbar.setNavigationOnClickListener(v -> finish());
+
+        // Dropdown selections
         citySelectButton.setOnClickListener(v -> loadCities());
-        districtSelectButton.setOnClickListener(v -> loadDistricts(selectedCityId));
-        wardSelectButton.setOnClickListener(v -> loadWards(selectedDistrictId));
+        districtSelectButton.setOnClickListener(v -> {
+            if (selectedCityId != null) {
+                loadDistricts(selectedCityId);
+            } else {
+                Toast.makeText(this, "Vui lòng chọn thành phố trước", Toast.LENGTH_SHORT).show();
+            }
+        });
+        wardSelectButton.setOnClickListener(v -> {
+            if (selectedDistrictId != null) {
+                loadWards(selectedDistrictId);
+            } else {
+                Toast.makeText(this, "Vui lòng chọn quận trước", Toast.LENGTH_SHORT).show();
+            }
+        });
 
+        // Complete button
         completeButton.setOnClickListener(v -> {
             Log.d(TAG, "Complete button clicked");
             saveAddress();
         });
-
-        binding.btnBack.setOnClickListener(v -> {
-            finish();
-        });
-
     }
 
     private void loadCities() {
@@ -125,6 +164,16 @@ public class AddShopAddressActivity extends AppCompatActivity {
                 .setItems(cityNames, (dialog, which) -> {
                     selectedCityId = cities.get(which).getId();
                     citySelectButton.setText(cityNames[which]);
+
+                    // Reset dependent dropdowns
+                    districtSelectButton.setText("");
+                    wardSelectButton.setText("");
+                    selectedDistrictId = null;
+                    selectedWardId = 0;
+
+                    // Enable district dropdown
+                    districtSelectButton.setEnabled(true);
+                    wardSelectButton.setEnabled(false);
                 })
                 .show();
     }
@@ -169,6 +218,13 @@ public class AddShopAddressActivity extends AppCompatActivity {
                 .setItems(districtNames, (dialog, which) -> {
                     selectedDistrictId = districts.get(which).getId();
                     districtSelectButton.setText(districtNames[which]);
+
+                    // Reset ward dropdown
+                    wardSelectButton.setText("");
+                    selectedWardId = 0;
+
+                    // Enable ward dropdown
+                    wardSelectButton.setEnabled(true);
                 })
                 .show();
     }
@@ -216,30 +272,48 @@ public class AddShopAddressActivity extends AppCompatActivity {
                 })
                 .show();
     }
+
     private boolean validateInput(String fullName, String phone) {
-        // Name
+        // Name validation
         if (fullName.isEmpty()) {
             Toast.makeText(this, "Tên không được để trống", Toast.LENGTH_SHORT).show();
+            fullNameEditText.requestFocus();
             return false;
         }
 
-        // Phone
+        // Phone validation
         if (phone.isEmpty()) {
             Toast.makeText(this, "Số điện thoại không được để trống", Toast.LENGTH_SHORT).show();
+            phoneEditText.requestFocus();
             return false;
         }
 
-        // Check phone format
+        // Phone format validation
         String phonePattern = "^[0-9]{10,15}$";
         if (!phone.matches(phonePattern)) {
             Toast.makeText(this, "Số điện thoại không hợp lệ. Vui lòng nhập lại.", Toast.LENGTH_SHORT).show();
+            phoneEditText.requestFocus();
+            return false;
+        }
+
+        // Address validation
+        if (selectedCityId == null) {
+            Toast.makeText(this, "Vui lòng chọn thành phố", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        if (selectedDistrictId == null) {
+            Toast.makeText(this, "Vui lòng chọn quận/huyện", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        if (selectedWardId == 0) {
+            Toast.makeText(this, "Vui lòng chọn phường/xã", Toast.LENGTH_SHORT).show();
             return false;
         }
 
         return true;
     }
-
-
 
     private void saveAddress() {
         Log.d(TAG, "saveAddress() called");
@@ -247,18 +321,19 @@ public class AddShopAddressActivity extends AppCompatActivity {
         String phone = phoneEditText.getText().toString().trim();
 
         if (!validateInput(fullName, phone)) {
-            return; // Not validate => Stop
-        }
-
-        if (fullName.isEmpty() || phone.isEmpty() || selectedCityId == null || selectedDistrictId == null || selectedWardId == 0) {
-            Toast.makeText(this, "Vui lòng điền đầy đủ thông tin", Toast.LENGTH_SHORT).show();
-            return;
+            return; // Validation failed, stop here
         }
 
         boolean isDefault = defaultAddressSwitch.isChecked();
-        String addressId = UUID.randomUUID().toString(); // Tạo ID ngẫu nhiên
+        String addressId = UUID.randomUUID().toString();
 
-        // Create new address
+        // Build complete address string
+        StringBuilder completeAddress = new StringBuilder();
+        completeAddress.append(wardSelectButton.getText().toString()).append(", ");
+        completeAddress.append(districtSelectButton.getText().toString()).append(", ");
+        completeAddress.append(citySelectButton.getText().toString());
+
+        // Create new address object
         UAddress newAddress = new UAddress(
                 addressId,
                 fullName,
@@ -273,51 +348,54 @@ public class AddShopAddressActivity extends AppCompatActivity {
                 "Inventory"
         );
 
-        // If it's a default address, check for existing default addresses
+        // Handle default address logic
         if (isDefault) {
-            // Find the current default address
-            addressesRef.orderByChild("default").equalTo(true)
-                    .addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            boolean existingDefaultFound = false; // Check if an existing default address is found
-                            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                                UAddress existingAddress = snapshot.getValue(UAddress.class);
-                                if (existingAddress != null && existingAddress.getUserId().equals("Inventory")) {
-                                    // Found an existing default address
-                                    Log.d(TAG, "Found existing default address: " + existingAddress.getAddressId());
-                                    // Update the existing default address to non-default
-                                    snapshot.getRef().child("default").setValue(false)
-                                            .addOnCompleteListener(updateTask -> {
-                                                if (updateTask.isSuccessful()) {
-                                                    Log.d(TAG, "Updated existing default address to non-default.");
-                                                } else {
-                                                    Log.e(TAG, "Failed to update existing default address: " + updateTask.getException().getMessage());
-                                                }
-                                            });
-                                    existingDefaultFound = true; // mark as found
-                                    break;
-                                }
-                            }
-                            // Lưu địa chỉ mới sau khi cập nhật địa chỉ cũ
-                            saveNewAddress(newAddress);
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-                            Log.e(TAG, "Error checking for existing default address: " + databaseError.getMessage());
-                        }
-                    });
+            handleDefaultAddressUpdate(newAddress);
         } else {
             saveNewAddress(newAddress);
         }
+    }
+
+    private void handleDefaultAddressUpdate(UAddress newAddress) {
+        // Find and update existing default address
+        addressesRef.orderByChild("default").equalTo(true)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                            UAddress existingAddress = snapshot.getValue(UAddress.class);
+                            if (existingAddress != null && existingAddress.getUserId().equals("Inventory")) {
+                                Log.d(TAG, "Found existing default address: " + existingAddress.getAddressId());
+                                // Update existing default to non-default
+                                snapshot.getRef().child("default").setValue(false)
+                                        .addOnCompleteListener(updateTask -> {
+                                            if (updateTask.isSuccessful()) {
+                                                Log.d(TAG, "Updated existing default address to non-default.");
+                                            } else {
+                                                Log.e(TAG, "Failed to update existing default address: " +
+                                                        updateTask.getException().getMessage());
+                                            }
+                                        });
+                                break;
+                            }
+                        }
+                        // Save new address after updating old default
+                        saveNewAddress(newAddress);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        Log.e(TAG, "Error checking for existing default address: " + databaseError.getMessage());
+                        Toast.makeText(AddShopAddressActivity.this, "Lỗi khi kiểm tra địa chỉ mặc định", Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
     private void saveNewAddress(UAddress newAddress) {
         addressesRef.child(newAddress.getAddressId()).setValue(newAddress)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        Toast.makeText(this, "Địa chỉ đã được lưu!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "Địa chỉ đã được lưu thành công!", Toast.LENGTH_SHORT).show();
                         setResult(RESULT_OK);
                         finish();
                     } else {
@@ -325,5 +403,11 @@ public class AddShopAddressActivity extends AppCompatActivity {
                         Toast.makeText(this, "Lỗi khi lưu địa chỉ", Toast.LENGTH_SHORT).show();
                     }
                 });
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 }
