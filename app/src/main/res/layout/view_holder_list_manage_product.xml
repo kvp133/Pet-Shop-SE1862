@@ -4,157 +4,193 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardCornerRadius="15dp"
-    android:padding="10dp"
-    android:elevation="3dp"
-    android:layout_margin="8dp">
-
+    app:cardCornerRadius="20dp"
+    app:cardElevation="8dp"
+    app:cardBackgroundColor="@android:color/white"
+    android:layout_margin="8dp"
+    android:foreground="?android:attr/selectableItemBackground">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-
-
-        <ImageView
-            android:id="@+id/imv_product_image"
+        <!-- Product Image Container -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/image_container"
             android:layout_width="0dp"
-            android:layout_height="111dp"
+            android:layout_height="140dp"
+            android:layout_margin="16dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="0dp"
+            app:cardBackgroundColor="@color/surface_secondary"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:srcCompat="@tools:sample/avatars" />
-        <TextView
-            android:id="@+id/tv_discount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:padding="10dp"
-            android:fontFamily="@font/poppins_semibold"
-            android:textStyle="bold"
-            android:gravity="center"
-            android:background="@drawable/grey_rectangle_button"
-            android:text="-20%"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="1dp"
-            android:layout_marginTop="1dp"
-            android:layout_marginEnd="1dp"
-            android:padding="15dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imv_product_image">
-
-            <Button
-                android:id="@+id/buttonEdit"
-                android:layout_width="94dp"
-                android:layout_height="47dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="44dp"
-                android:backgroundTint="@color/textColorHint"
-                android:text="Edit"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_category" />
-
-            <TextView
-                android:id="@+id/tv_product_name"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:fontFamily="@font/poppins_semibold"
-                android:text="Produt name"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/tv_category"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/rectangle_button_border_red"
-                android:paddingStart="10dp"
-                android:paddingTop="3dp"
-                android:paddingEnd="10dp"
-                android:paddingBottom="3dp"
-                android:text="category"
-                android:textColor="@color/red"
-                app:layout_constraintStart_toStartOf="@+id/tv_product_name"
-                app:layout_constraintTop_toBottomOf="@+id/tv_product_name" />
-
-            <TextView
-                android:id="@+id/tv_old_price"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="16dp"
-                android:fontFamily="@font/poppins_light"
-                android:text="100$"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/tv_category"
-                app:layout_constraintTop_toBottomOf="@+id/tv_category"
-                app:layout_constraintVertical_bias="0.0" />
-
-            <TextView
-                android:id="@+id/tv_new_price"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="16dp"
-                android:fontFamily="@font/poppins_semibold"
-                android:text="50$"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/tv_old_price"
-                app:layout_constraintTop_toBottomOf="@+id/tv_category"
-                app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
-                android:id="@+id/imageView2"
+                android:id="@+id/imv_product_image"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:contentDescription="Product image"
+                tools:src="@tools:sample/avatars" />
+
+            <!-- Discount Badge -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/discount_container"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="10dp"
-                app:layout_constraintBottom_toTopOf="@+id/tv_old_price"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/tv_category"
-                app:srcCompat="@drawable/baseline_star_24" />
+                android:layout_gravity="start|top"
+                android:layout_margin="12dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp"
+                app:cardBackgroundColor="@color/error"/>
+        </androidx.cardview.widget.CardView>
 
+        <!-- Content Container -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/image_container">
+
+            <!-- Product Name -->
             <TextView
-                android:id="@+id/tv_rating"
-                android:layout_width="wrap_content"
+                android:id="@+id/tv_product_name"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="10dp"
-                android:text="0"
-                app:layout_constraintBottom_toBottomOf="@+id/imageView2"
-                app:layout_constraintEnd_toStartOf="@+id/imageView2"
-                app:layout_constraintTop_toTopOf="@+id/imageView2" />
+                android:text="Product Name"
+                android:textSize="18sp"
+                android:textColor="@color/text_primary"
+                android:fontFamily="@font/poppins_semibold"
+                android:textStyle="bold"
+                android:lineSpacingExtra="2dp"
+                android:layout_marginBottom="12dp"
+                android:maxLines="2"
+                android:ellipsize="end" />
 
-            <Button
-                android:id="@+id/buttonDelete"
-                android:layout_width="94dp"
-                android:layout_height="44dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="20dp"
-                android:text="Delete"
-                android:backgroundTint="@color/textColorHint"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/buttonEdit" />
+            <!-- Category and Rating Row -->
+            <LinearLayout
+                android:layout_width="360dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
+                <!-- Category Badge -->
+                <androidx.cardview.widget.CardView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:cardBackgroundColor="@color/error_light"
+                    app:cardCornerRadius="12dp"
+                    app:cardElevation="0dp">
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                    <TextView
+                        android:id="@+id/tv_category"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_light"
+                        android:paddingStart="12dp"
+                        android:paddingTop="6dp"
+                        android:paddingEnd="12dp"
+                        android:paddingBottom="6dp"
+                        android:text="Category"
+                        android:textColor="@color/error"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+                </androidx.cardview.widget.CardView>
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1" />
+
+                <!-- Rating Section -->
+            </LinearLayout>
+
+            <!-- Price Section -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="20dp">
+
+                <TextView
+                    android:id="@+id/tv_new_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="80đ"
+                    android:textSize="20sp"
+                    android:textColor="@color/primary"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <!-- Action Buttons -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:weightSum="2">
+
+                <!-- Edit Button -->
+
+                <!-- Delete Button -->
+                <androidx.cardview.widget.CardView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_weight="1"
+                    app:cardBackgroundColor="@color/success_light"
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="0dp">
+
+                    <Button
+                        android:id="@+id/buttonEdit"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:background="@android:color/transparent"
+                        android:drawableLeft="@drawable/ic_edit"
+                        android:drawablePadding="8dp"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:gravity="center"
+                        android:text="Edit"
+                        android:textAllCaps="false"
+                        android:textColor="@color/success"
+                        android:textSize="14sp"
+                        app:drawableTint="@color/success" />
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="8dp"
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="0dp"
+                    app:cardBackgroundColor="@color/error_light">
+
+                    <Button
+                        android:id="@+id/buttonDelete"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:background="@android:color/transparent"
+                        android:drawableLeft="@drawable/ic_delete"
+                        android:drawablePadding="8dp"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:gravity="center"
+                        android:text="Delete"
+                        android:textAllCaps="false"
+                        android:textColor="@color/error"
+                        android:textSize="14sp"
+                        app:drawableTint="@color/error" />
+                </androidx.cardview.widget.CardView>
+            </LinearLayout>
+        </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>
