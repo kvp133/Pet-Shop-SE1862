@@ -21,6 +21,7 @@ import com.example.petshopapplication.model.Category;
 import com.example.petshopapplication.model.FeedBack;
 import com.example.petshopapplication.model.Product;
 import com.example.petshopapplication.model.Variant;
+import com.google.android.material.card.MaterialCardView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -75,17 +76,29 @@ public class ListProductAdapter extends RecyclerView.Adapter<ListProductAdapter.
         }
 
         //check if product is discounted
-        if(product.getDiscount() > 0) {
-            holder.tv_discount.setText(String.valueOf("-" + product.getDiscount()) + "%");
-            holder.tv_old_price.setText(String.format("%,.0fđ", oldPrice));
-            holder.tv_old_price.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
-            holder.tv_new_price.setText(String.format("%,.0f$", oldPrice * (1 - product.getDiscount()/100.0)));
+        if (product.getDiscount() > 0) {
+            // Hiển thị badge discount
+            holder.discountContainer.setVisibility(View.VISIBLE);
+            holder.tv_discount.setVisibility(View.VISIBLE);
+            holder.tv_discount.setText("-" + product.getDiscount() + "%");
 
+            // Hiển thị giá cũ
+            holder.tv_old_price.setVisibility(View.VISIBLE);
+            holder.tv_old_price.setText(String.format("%,.0fđ", oldPrice));
+            holder.tv_old_price.setPaintFlags(
+                    holder.tv_old_price.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG
+            );
+
+            // New price
+            double newPrice = oldPrice * (1 - product.getDiscount()/100.0);
+            holder.tv_new_price.setText(String.format("%,.0fđ", newPrice));
         } else {
-            holder.tv_discount.setVisibility(View.GONE);
+            // Ẩn các view khi không có discount
+            holder.discountContainer.setVisibility(View.GONE);
             holder.tv_old_price.setVisibility(View.GONE);
             holder.tv_new_price.setText(String.format("%,.0fđ", oldPrice));
         }
+
 
         //Set category
         holder.tv_category.setText(getCategoryById(product.getCategoryId()).getName());
@@ -170,15 +183,19 @@ public class ListProductAdapter extends RecyclerView.Adapter<ListProductAdapter.
     public class ProductHolder extends RecyclerView.ViewHolder {
         ImageView imv_product_image;
         TextView tv_product_name, tv_rating, tv_old_price, tv_new_price, tv_discount, tv_category;
+        MaterialCardView discountContainer;  // thêm
+
         public ProductHolder(@NonNull View itemView) {
             super(itemView);
             imv_product_image = itemView.findViewById(R.id.imv_product_image);
-            tv_product_name = itemView.findViewById(R.id.tv_product_name);
-            tv_new_price = itemView.findViewById(R.id.tv_new_price);
-            tv_old_price = itemView.findViewById(R.id.tv_old_price);
-            tv_discount = itemView.findViewById(R.id.tv_discount);
-            tv_rating = itemView.findViewById(R.id.tv_rating);
-            tv_category = itemView.findViewById(R.id.tv_category);
+            tv_product_name  = itemView.findViewById(R.id.tv_product_name);
+            tv_new_price     = itemView.findViewById(R.id.tv_new_price);
+            tv_old_price     = itemView.findViewById(R.id.tv_old_price);
+            tv_discount      = itemView.findViewById(R.id.tv_discount);
+            tv_rating        = itemView.findViewById(R.id.tv_rating);
+            tv_category      = itemView.findViewById(R.id.tv_category);
+            discountContainer= itemView.findViewById(R.id.discount_container);  // bind view
         }
     }
+
 }
