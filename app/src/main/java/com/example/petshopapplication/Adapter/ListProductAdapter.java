@@ -21,6 +21,8 @@ import com.example.petshopapplication.model.Category;
 import com.example.petshopapplication.model.FeedBack;
 import com.example.petshopapplication.model.Product;
 import com.example.petshopapplication.model.Variant;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.card.MaterialCardView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -28,22 +30,22 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListProductAdapter extends RecyclerView.Adapter<ListProductAdapter.ProductHolder>{
+public class ListProductAdapter extends RecyclerView.Adapter<ListProductAdapter.ProductHolder> {
 
-    List<Product> productItems;
-    List<Category> categoryItems;
-    Context context;
-    FirebaseDatabase database;
-    DatabaseReference reference;
+    private List<Product> productItems;
+    private List<Category> categoryItems;
+    private Context context;
+    private FirebaseDatabase database;
+    private DatabaseReference reference;
 
     public ListProductAdapter(List<Product> productItems, List<Category> categoryItems) {
         this.productItems = productItems;
         this.categoryItems = categoryItems;
     }
-
 
     @NonNull
     @Override
@@ -57,67 +59,76 @@ public class ListProductAdapter extends RecyclerView.Adapter<ListProductAdapter.
     public void onBindViewHolder(@NonNull ProductHolder holder, int position) {
         Product product = productItems.get(position);
 
-        //Check length of product name
-        if(product.getName().length() > 40) {
+        // Product name trimming
+        if (product.getName().length() > 40) {
             holder.tv_product_name.setText(product.getName().substring(0, 30) + "...");
         } else {
             holder.tv_product_name.setText(product.getName());
         }
 
-        double oldPrice = product.getBasePrice();
+        double basePrice = product.getBasePrice();
         String imageUrl = product.getBaseImageURL();
-        //Check if product have variants
+
+        // If variants exist, use first variant's price
         List<Variant> variants = product.getListVariant();
-        if(variants != null && !variants.isEmpty()) {
-            oldPrice = product.getListVariant().get(0).getPrice();
-            //check if product have color variants
-
+        if (variants != null && !variants.isEmpty()) {
+            basePrice = variants.get(0).getPrice();
         }
 
-        //check if product is discounted
-        if(product.getDiscount() > 0) {
-            holder.tv_discount.setText(String.valueOf("-" + product.getDiscount()) + "%");
-            holder.tv_old_price.setText(String.format("%,.0fđ", oldPrice));
-            holder.tv_old_price.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
-            holder.tv_new_price.setText(String.format("%,.0f$", oldPrice * (1 - product.getDiscount()/100.0)));
+        // Handle discount
+        if (product.getDiscount() > 0) {
+            holder.discountContainer.setVisibility(View.VISIBLE);
+            holder.tv_discount.setVisibility(View.VISIBLE);
+            holder.tv_discount.setText("-" + product.getDiscount() + "%");
 
+            holder.tv_old_price.setVisibility(View.VISIBLE);
+            holder.tv_old_price.setText(String.format("%,.0fđ", basePrice));
+            holder.tv_old_price.setPaintFlags(
+                    holder.tv_old_price.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG
+            );
+
+            double newPrice = basePrice * (1 - product.getDiscount() / 100.0);
+            holder.tv_new_price.setText(String.format("%,.0fđ", newPrice));
         } else {
-            holder.tv_discount.setVisibility(View.GONE);
+            holder.discountContainer.setVisibility(View.GONE);
             holder.tv_old_price.setVisibility(View.GONE);
-            holder.tv_new_price.setText(String.format("%,.0fđ", oldPrice));
+            holder.tv_new_price.setText(String.format("%,.0fđ", basePrice));
         }
 
-        //Set category
-        holder.tv_category.setText(getCategoryById(product.getCategoryId()).getName());
+        // Category
+        Category cat = getCategoryById(product.getCategoryId());
+        holder.tv_category.setText(cat != null ? cat.getName() : "");
 
+        // Image
         Glide.with(context)
                 .load(imageUrl)
                 .transform(new CenterCrop(), new RoundedCorners(30))
                 .into(holder.imv_product_image);
 
-        holder.itemView.setOnClickListener(v -> {
-            // Open product detail activity with product id
+        // Item click opens detail
+      //  holder.itemView.setOnClickListener(v -> {
+     //       Intent intent = new Intent(context, ProductDetailActivity.class);
+      //      intent.putExtra("productId", product.getId());
+      //      context.startActivity(intent);
+     //   });
+
+        // Add-to-cart button click opens detail
+        holder.btn_add_to_cart.setOnClickListener(v -> {
             Intent intent = new Intent(context, ProductDetailActivity.class);
             intent.putExtra("productId", product.getId());
             context.startActivity(intent);
         });
 
-        System.out.println(product);
+        // Fetch and display feedback
         fetchFeedback(product, holder);
     }
 
-    private Category getCategoryById(String categoryId) {
-        for (Category category : categoryItems) {
-            if (category.getId().equals(categoryId)) {
-                return category;
-            }
-        }
-        return null;  // Return null if category not found
+    @Override
+    public int getItemCount() {
+        return productItems.size();
     }
 
-
-
-    public Category getCategory(String categoryId) {
+    private Category getCategoryById(String categoryId) {
         for (Category category : categoryItems) {
             if (category.getId().equals(categoryId)) {
                 return category;
@@ -134,42 +145,33 @@ public class ListProductAdapter extends RecyclerView.Adapter<ListProductAdapter.
         Query query = reference.orderByChild("productId").equalTo(product.getId());
         query.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(@androidx.annotation.NonNull DataSnapshot snapshot) {
-                feedbackItems.clear();
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
                 int totalRating = 0;
                 int feedbackCount = 0;
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     FeedBack feedback = dataSnapshot.getValue(FeedBack.class);
-                    if (!feedback.isDeleted()) {
-                        System.out.println();
+                    if (feedback != null && !feedback.isDeleted()) {
                         feedbackItems.add(feedback);
                         totalRating += feedback.getRating();
                         feedbackCount++;
                     }
-                    if (feedbackCount > 0){
-                        double averageRating = (double) totalRating / feedbackCount;
-                        String formattedRating = String.format("%.1f", averageRating);
-                        holder.tv_rating.setText(formattedRating);
-                    }
                 }
+
             }
 
             @Override
-            public void onCancelled(@androidx.annotation.NonNull DatabaseError error) {
-
+            public void onCancelled(@NonNull DatabaseError error) {
+                // Handle error
             }
         });
     }
 
-    @Override
-    public int getItemCount() {
-        return productItems.size();
-    }
-
-
     public class ProductHolder extends RecyclerView.ViewHolder {
         ImageView imv_product_image;
         TextView tv_product_name, tv_rating, tv_old_price, tv_new_price, tv_discount, tv_category;
+        MaterialCardView discountContainer;
+        MaterialButton btn_add_to_cart;
+
         public ProductHolder(@NonNull View itemView) {
             super(itemView);
             imv_product_image = itemView.findViewById(R.id.imv_product_image);
@@ -179,6 +181,8 @@ public class ListProductAdapter extends RecyclerView.Adapter<ListProductAdapter.
             tv_discount = itemView.findViewById(R.id.tv_discount);
             tv_rating = itemView.findViewById(R.id.tv_rating);
             tv_category = itemView.findViewById(R.id.tv_category);
+            discountContainer = itemView.findViewById(R.id.discount_container);
+            btn_add_to_cart = itemView.findViewById(R.id.btn_add_to_cart);
         }
     }
 }

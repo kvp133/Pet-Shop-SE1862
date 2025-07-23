@@ -2,11 +2,13 @@ package com.example.petshopapplication;
 
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -53,6 +55,9 @@ public class ListProductActivity extends AppCompatActivity implements ListProduc
     private boolean isSearch;
     private boolean isLoading = false;
 
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,6 +69,7 @@ public class ListProductActivity extends AppCompatActivity implements ListProduc
         setupScrollListener();
         setupClickListeners();
         getIntentExtra();
+
 
         // Add entrance animation
         animateEntrance();

@@ -21,6 +21,7 @@ import com.example.petshopapplication.R;
 import com.example.petshopapplication.model.Category;
 import com.example.petshopapplication.model.FeedBack;
 import com.example.petshopapplication.model.Product;
+import com.example.petshopapplication.model.Variant;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -77,27 +78,13 @@ public class ListUpdateProductAdapter extends RecyclerView.Adapter<ListUpdatePro
 
         double oldPrice = product.getBasePrice();
         String imageUrl = product.getBaseImageURL();
-        //Check if product have variants
-        if(!product.getListVariant().isEmpty()) {
+        List<Variant> variants = product.getListVariant();
+        if(variants != null && !variants.isEmpty()) {
             oldPrice = product.getListVariant().get(0).getPrice();
-            //check if product have color variants
-            if(product.getListVariant().get(0).getListColor() != null && !product.getListVariant().get(0).getListColor().isEmpty()) {
-                imageUrl = product.getListVariant().get(0).getListColor().get(0).getImageUrl();
-            }
-        }
 
-        //check if product is discounted
-        if(product.getDiscount() > 0) {
-            holder.tv_discount.setText(String.valueOf("-" + product.getDiscount()) + "%");
-            holder.tv_old_price.setText(String.format("%,.0fđ", oldPrice));
-            holder.tv_old_price.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
-            holder.tv_new_price.setText(String.format("%,.0f$", oldPrice * (1 - product.getDiscount()/100.0)));
 
-        } else {
-            holder.tv_discount.setVisibility(View.GONE);
-            holder.tv_old_price.setVisibility(View.GONE);
-            holder.tv_new_price.setText(String.format("%,.0fđ", oldPrice));
         }
+        holder.tv_new_price.setText(String.format("%,.0fđ", oldPrice));
 
         //Set category
         holder.tv_category.setText(getCategoryById(product.getCategoryId()).getName());
