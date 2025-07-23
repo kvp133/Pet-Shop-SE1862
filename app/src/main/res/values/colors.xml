@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <!-- Basic Colors -->
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
     <!-- Primary Colors -->
-    <color name="primary">#3B82F6</color>                <!-- from first file -->
-    <color name="primary_dark">#4a5568</color>           <!-- overridden by second file -->
-    <color name="primary_light">#e6fffa</color>          <!-- overridden by second file -->
-    <color name="primary_gradient_start">#667eea</color> <!-- from second file -->
-    <color name="primary_gradient_end">#764ba2</color>   <!-- from second file -->
+    <color name="primary">#3B82F6</color>
+    <color name="primary_dark">#4a5568</color>
+    <color name="primary_light">#e6fffa</color>
+    <color name="primary_gradient_start">#667eea</color>
+    <color name="primary_gradient_end">#764ba2</color>
 
     <!-- Accent Colors -->
     <color name="accent_orange">#ff6b6b</color>
@@ -17,19 +18,20 @@
     <color name="accent_green">#45b7d1</color>
 
     <!-- Background Colors -->
-    <color name="background_primary">#edf2f7</color>     <!-- overridden by second file -->
-    <color name="background_secondary">#edf2f7</color>   <!-- from second file -->
+    <color name="background_primary">#edf2f7</color>
+    <color name="background_secondary">#edf2f7</color>
 
     <!-- Surface Colors -->
-    <color name="surface_primary">#FFFFFF</color>        <!-- from first file -->
-    <color name="surface_secondary">#F8FAFC</color>      <!-- from first file -->
+    <color name="surface_primary">#FFFFFF</color>
+    <color name="surface_secondary">#F8FAFC</color>
 
     <!-- Text Colors -->
-    <color name="text_primary">#2d3748</color>           <!-- overridden by second file -->
-    <color name="text_secondary">#718096</color>         <!-- overridden by second file -->
-    <color name="text_tertiary">#94A3B8</color>          <!-- from first file -->
-    <color name="text_hint">#a0aec0</color>              <!-- renamed/standardized hint -->
-    <color name="textColorHint">#bf592b</color>          <!-- overridden by second file -->
+    <color name="text_primary">#2d3748</color>
+    <color name="text_secondary">#718096</color>
+    <color name="text_tertiary">#94A3B8</color>
+    <color name="text_hint">#a0aec0</color>
+    <color name="hint_text">#a0aec0</color>
+    <color name="textColorHint">#bf592b</color>
 
     <!-- Button & UI Element Colors -->
     <color name="button_background">#fe854f</color>
@@ -41,25 +43,25 @@
     <color name="light_grey">#F3F3F3</color>
 
     <!-- Status & Semantic Colors -->
-    <color name="success">#10B981</color>       <!-- from first file -->
-    <color name="success_green">#38a169</color> <!-- from second file -->
+    <color name="success">#10B981</color>
+    <color name="success_green">#38a169</color>
     <color name="success_light">#D1FAE5</color>
     <color name="error">#EF4444</color>
     <color name="error_light">#FEE2E2</color>
     <color name="warning">#F59E0B</color>
     <color name="warning_light">#FEF3C7</color>
-    <color name="discount_red">#e53e3e</color>  <!-- from second file -->
-    <color name="rating_yellow">#ffd700</color> <!-- from second file -->
+    <color name="discount_red">#e53e3e</color>
+    <color name="rating_yellow">#ffd700</color>
     <color name="yellow">#FFEB3B</color>
     <color name="yellow_star">#FFC106</color>
-    <color name="red">#E03535</color>           <!-- overridden by second file -->
+    <color name="red">#E03535</color>
     <color name="green">#1FA867</color>
 
     <!-- Legacy / Compatibility Colors -->
-    <color name="edtColor">#edbea4</color>       <!-- overridden by second file -->
-    <color name="red_legacy">#EF4444</color>     <!-- renamed legacy red -->
+    <color name="edtColor">#edbea4</color>
+    <color name="red_legacy">#EF4444</color>
 
-    <!-- Material Colors -->
+    <!-- Material Palette -->
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>
     <color name="purple_700">#FF3700B3</color>
@@ -84,5 +86,7 @@
     <color name="card_shadow">#1a202c20</color>
     <color name="card_border">#e2e8f0</color>
 
+    <!-- Pet Shop Specific -->
     <color name="pet_shop_background">#F7F9FC</color>
+
 </resources>

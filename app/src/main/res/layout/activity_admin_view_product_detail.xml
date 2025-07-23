@@ -5,6 +5,7 @@
     android:id="@+id/admin_product_details"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/glass_bg"
     tools:context=".AdminViewProductDetailActivity">
 
     <ScrollView
@@ -20,12 +21,10 @@
             android:orientation="vertical"
             android:paddingBottom="80dp">
 
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:orientation="vertical">
+                android:background="@drawable/glass_card" android:orientation="vertical">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -49,6 +48,7 @@
                         android:fontFamily="@font/poppins_semibold"
                         android:gravity="center"
                         android:text="-20%"
+                        android:textColor="@android:color/black"
                         android:textStyle="bold"
                         app:layout_constraintBottom_toBottomOf="@+id/imv_product_image"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -63,9 +63,8 @@
                         android:padding="8dp"
                         android:src="@drawable/arrow"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:tint="@android:color/black" /> </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -95,6 +94,7 @@
                         android:layout_weight="1"
                         android:fontFamily="@font/poppins_semibold"
                         android:text="Title"
+                        android:textColor="@android:color/black"
                         android:textSize="20sp"
                         android:textStyle="bold" />
 
@@ -104,7 +104,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/poppins_light"
                         android:text="40$"
-                        android:textColor="@color/gray"
+                        android:textColor="@color/glass_white_80"
                         android:textSize="20sp" />
 
                     <TextView
@@ -113,7 +113,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/poppins_light"
                         android:text="40$"
-                        android:textColor="@color/red"
+                        android:textColor="@android:color/black"
                         android:textSize="20sp"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -145,17 +145,16 @@
                         android:layout_marginStart="8dp"
                         android:layout_marginTop="4dp"
                         android:text="0"
-                        app:layout_constraintStart_toEndOf="@+id/rtb_feedback_rating"
+                        android:textColor="@color/glass_white_80" app:layout_constraintStart_toEndOf="@+id/rtb_feedback_rating"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
                         android:id="@+id/txt_rating"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-
                         android:layout_marginStart="4dp"
                         android:text="Rating"
-                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:textColor="@color/glass_white_80" app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/tv_rating"
                         app:layout_constraintTop_toTopOf="@+id/tv_rating"
                         app:layout_constraintVertical_bias="0.0" />
@@ -165,7 +164,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="0"
-                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:textColor="@color/glass_white_80" app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="@id/tv_rating"
                         app:layout_constraintTop_toBottomOf="@id/tv_rating" />
 
@@ -176,7 +175,7 @@
                         android:layout_marginStart="4dp"
                         android:layout_marginBottom="4dp"
                         android:text="Rated"
-                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:textColor="@color/glass_white_80" app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintTop_toTopOf="@id/tv_rating2"
                         app:layout_constraintStart_toEndOf="@+id/tv_rating2" />
 
@@ -187,8 +186,7 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:tint="@color/red"
-                        tools:srcCompat="@drawable/time_125" />
+                        app:tint="@color/glass_white_80" tools:srcCompat="@drawable/time_125" />
 
                     <TextView
                         android:id="@+id/tv_stock_product"
@@ -196,7 +194,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="8dp"
                         android:text="15"
-                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:textColor="@color/glass_white_80" app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/imageView5"
                         app:layout_constraintTop_toTopOf="parent" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -211,42 +209,38 @@
                     android:fontFamily="@font/poppins_semibold"
                     android:text="Details"
                     android:textSize="18sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:textColor="@android:color/black" /> <TextView
+                android:id="@+id/tv_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:fontFamily="@font/poppins_light"
+                android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+                android:textSize="16sp"
+                android:textColor="@color/glass_white_80" /> <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="16dp"
+                android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/tv_description"
-                    android:layout_width="match_parent"
+                    android:id="@+id/textView4"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
-                    android:fontFamily="@font/poppins_light"
-                    android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
-                    android:textSize="16sp" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="24dp"
-                    android:layout_marginEnd="16dp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/textView4"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:fontFamily="@font/poppins_semibold"
-                        android:text="Product Feedback"
-                        android:textSize="18sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/tv_view_list_product_feedback"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="VIEW ALL" />
-
-                </LinearLayout>
+                    android:layout_weight="1"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:text="Product Feedback"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="@android:color/black" /> <TextView
+                android:id="@+id/tv_view_list_product_feedback"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="VIEW ALL"
+                android:textColor="@color/glass_link_blue" /> </LinearLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -267,43 +261,38 @@
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:gravity="center"
-                    android:text="No Feedback yet!" />
-            </LinearLayout>
+                    android:text="No Feedback yet!"
+                    android:textColor="@color/glass_white_80" /> </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/grey"
-                android:orientation="vertical">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:paddingVertical="16dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:orientation="horizontal">
+                android:background="@android:color/transparent" android:orientation="vertical"
+                android:layout_marginTop="16dp"> <LinearLayout
+                android:layout_width="match_parent"
+                android:paddingVertical="16dp"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
 
-                    <View
-                        android:layout_width="50dp"
-                        android:layout_height="1dp"
-                        android:layout_gravity="center_vertical"
-                        android:background="@color/edtColor" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
-                        android:layout_marginEnd="20dp"
-                        android:fontFamily="@font/poppins_semibold"
-                        android:text="You may like"
-                        android:textSize="18sp"
-                        android:textStyle="bold" />
-
-                    <View
-                        android:layout_width="50dp"
-                        android:layout_height="1dp"
-                        android:layout_gravity="center_vertical"
-                        android:background="@color/edtColor" />
-                </LinearLayout>
+                <View
+                    android:layout_width="50dp"
+                    android:layout_height="1dp"
+                    android:layout_gravity="center_vertical"
+                    android:background="@color/glass_white_80" /> <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:fontFamily="@font/poppins_semibold"
+                android:text="You may like"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/black" /> <View
+                android:layout_width="50dp"
+                android:layout_height="1dp"
+                android:layout_gravity="center_vertical"
+                android:background="@color/glass_white_80" /> </LinearLayout>
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
@@ -320,6 +309,27 @@
         </LinearLayout>
     </ScrollView>
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="0dp"
+        android:layout_height="75dp"
+        android:background="@android:color/transparent" app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_add_cart"
+            style="@android:style/Widget.Button"
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/button_glass_blue" android:drawableStart="@drawable/cart"
+            android:paddingStart="16sp"
+            android:text="Add to cart"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

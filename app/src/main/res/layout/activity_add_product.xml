@@ -1,144 +1,155 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/add_product_bg"
-    android:fillViewport="true"
-    android:overScrollMode="always">
+    android:background="@color/glass_white_80">
 
-    <ImageView
+    <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/imvGoBack"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:padding="12dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/baseline_arrow_back_24" />
-
-    <ProgressBar
-        android:id="@+id/prg_home_category2"
-        style="?android:attr/progressBarStyle"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:backgroundTint="@color/glass_blue_1"
+        android:title="Add Product"
+        app:navigationIcon="@drawable/baseline_arrow_back_24"
+        android:theme="@style/ThemeOverlay.Material3.Dark.ActionBar" />
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="80dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent">
+        android:layout_height="match_parent"
+        android:layout_marginTop="?attr/actionBarSize"
+        android:padding="16dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_gravity="center_horizontal"
-            android:padding="20dp">
+            android:paddingBottom="100dp">
 
-            <EditText
-                android:id="@+id/add_product_name"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="30dp"
-                android:layout_marginEnd="10dp"
-                android:background="@drawable/around_border"
-                android:gravity="start|center_vertical"
-                android:hint="Product Name"
-                android:padding="16dp"/>
-
-            <Spinner
-                android:id="@+id/add_product_category"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="10dp"
-                android:background="@drawable/around_border"
-                android:gravity="start|center_vertical"
-                android:padding="16dp"/>
-            <EditText
-                android:id="@+id/add_product_base_price"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="10dp"
-                android:background="@drawable/around_border"
-                android:gravity="start|center_vertical"
-                android:hint="Base Price"
-                android:padding="16dp"/>
-
-            <EditText
-                android:id="@+id/add_product_discount"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="10dp"
-                android:background="@drawable/around_border"
-                android:gravity="start|center_vertical"
-                android:hint="Discount"
-                android:padding="16dp"
-                android:inputType="numberDecimal"/>
-
-            <EditText
-                android:id="@+id/add_product_description"
+            <!-- Product Name -->
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="10dp"
-                android:background="@drawable/around_border"
-                android:gravity="start|center_vertical"
-                android:hint="Description"
-                android:padding="16dp"
-                android:minLines="2"
-                android:maxLines="10"
-                android:scrollbars="vertical"
-                android:inputType="textMultiLine"
-                android:overScrollMode="always"/>
+                android:hint="Product Name">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/add_product_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </com.google.android.material.textfield.TextInputLayout>
 
+            <!-- Category Dropdown -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:hint="Category"
+                app:endIconMode="dropdown_menu">
+                <AutoCompleteTextView
+                    android:id="@+id/add_product_category"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="none"
+                    android:importantForAccessibility="no"
+                    android:dropDownHeight="wrap_content"
+                    android:dropDownVerticalOffset="8dp"
+                    android:dropDownHorizontalOffset="8dp"
+                    android:dropDownWidth="match_parent"
+                    android:textColorHint="@color/hint_text"
+                    android:textSize="14sp"
+                    android:textColor="@color/black"
+                    android:paddingVertical="12dp"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:background="@null"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:clickable="true"
+                    android:cursorVisible="false" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Base Price -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Base Price"
+                android:layout_marginTop="16dp">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/add_product_base_price"
+                    android:inputType="numberDecimal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Discount -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Discount"
+                android:layout_marginTop="16dp">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/add_product_discount"
+                    android:inputType="numberDecimal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Description -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Description"
+                android:layout_marginTop="16dp">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/add_product_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textMultiLine"
+                    android:minLines="3"
+                    android:maxLines="6" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Upload Image -->
             <ImageView
                 android:id="@+id/add_product_upload_image"
                 android:layout_width="match_parent"
-                android:layout_height="150dp"
+                android:layout_height="180dp"
+                android:layout_marginTop="16dp"
+                android:scaleType="centerCrop"
                 android:src="@drawable/upload_img"
-                android:layout_marginTop="10dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"/>
+                android:background="@drawable/glass_card" />
 
             <TextView
                 android:id="@+id/add_product_upload_img_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
                 android:text="Upload Image"
-                android:textColor="@color/textColorHint"
                 android:textAlignment="center"
-                android:textSize="15sp"/>
+                android:textColor="@color/textColorHint"
+                android:textSize="14sp"
+                android:layout_marginTop="8dp" />
 
-            <Button
+            <!-- Add Button -->
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/add_product_button"
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="10dp"
-                android:backgroundTint="@color/glass_blue_1"
+                android:layout_height="wrap_content"
                 android:text="Add"
-                android:textSize="18sp"
-                app:cornerRadius="20dp"/>
+                android:layout_marginTop="24dp"
+                app:icon="@drawable/baseline_add_24"
+                app:iconPadding="12dp"
+                app:backgroundTint="@color/button_background"
+                android:textColor="@color/white"
+                app:cornerRadius="16dp" />
+
         </LinearLayout>
     </ScrollView>
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- Progress Bar -->
+    <ProgressBar
+        android:id="@+id/prg_home_category2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
