@@ -37,6 +37,7 @@
                     tools:src="@tools:sample/backgrounds/scenic" />
 
                 <!-- Gradient Overlay for Better Text Visibility -->
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
@@ -71,18 +72,6 @@
                 </com.google.android.material.card.MaterialCardView>
 
                 <!-- Favorite Button -->
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
-                    android:id="@+id/fab_favorite"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="top|end"
-                    android:layout_margin="12dp"
-                    android:backgroundTint="@color/glass_white"
-                    android:src="@drawable/baseline_favorite_border_24"
-                    app:borderWidth="0dp"
-                    app:fabCustomSize="36dp"
-                    app:maxImageSize="20dp"
-                    app:tint="@color/text_secondary" />
             </FrameLayout>
         </com.google.android.material.card.MaterialCardView>
 
@@ -140,51 +129,6 @@
             </LinearLayout>
 
             <!-- Rating Section -->
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="14dp"
-                    android:layout_height="14dp"
-                    android:src="@drawable/baseline_star_24"
-                    android:tint="@color/rating_yellow" />
-
-                <TextView
-                    android:id="@+id/tv_rating"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
-                    android:fontFamily="@font/poppins_semibold"
-                    android:text="4.5"
-                    android:textColor="@color/text_primary"
-                    android:textSize="12sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/tv_rated_num"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
-                    android:fontFamily="@font/poppins_light"
-                    android:text="(128)"
-                    android:textColor="@color/text_secondary"
-                    android:textSize="12sp" />
-
-                <TextView
-                    android:id="@+id/txt_rated"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
-                    android:fontFamily="@font/poppins_light"
-                    android:text="Reviews"
-                    android:textColor="@color/text_secondary"
-                    android:textSize="12sp"
-                    android:visibility="gone" />
-            </LinearLayout>
 
             <!-- Spacer -->
             <View
@@ -206,17 +150,9 @@
                     android:orientation="vertical">
 
                     <!-- Current Price -->
-                    <TextView
-                        android:id="@+id/tv_new_price"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/poppins_bold"
-                        android:text="$29.99"
-                        android:textColor="@color/primary_gradient_end"
-                        android:textSize="18sp"
-                        android:textStyle="bold" />
 
                     <!-- Old Price -->
+
                     <TextView
                         android:id="@+id/tv_old_price"
                         android:layout_width="wrap_content"
@@ -247,6 +183,17 @@
                     app:iconSize="24dp"
                     app:iconTint="@android:color/white" />
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_new_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_bold"
+                android:text="$29.99"
+                android:textColor="@color/primary_gradient_end"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
         </LinearLayout>
 
         <!-- Shimmer Effect Overlay (for loading states) -->
