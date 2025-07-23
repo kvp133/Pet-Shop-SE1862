@@ -47,6 +47,7 @@
     <color name="text_primary">#2d3748</color>
     <color name="text_secondary">#718096</color>
     <color name="text_hint">#a0aec0</color>
+    <color name="hint_text">#808080</color>
 
     <!-- Background Colors -->
     <color name="background_primary">#f7fafc</color>
