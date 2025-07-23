@@ -61,6 +61,7 @@
     <string name="ad_manage_order">Manage Order</string>
     <string name="open_nav">Open Navigation Drawer</string>
     <string name="close_nav">Close Navigation Drawer</string>
+    <string name="close_nav2">Close Navigation Drawer</string>
 
 
 </resources>
