@@ -51,6 +51,10 @@ public class AdminManageProductFragment extends Fragment {
         view.findViewById(R.id.btnAddNewProduct).setOnClickListener(v -> openAddProductActivity());
         view.findViewById(R.id.btnViewListProduct).setOnClickListener(v -> openUpdateProductActivity());
         view.findViewById(R.id.btnManageCategory).setOnClickListener(v -> openManageCategory());
+        view.findViewById(R.id.btnManageOrder).setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), ListOrderManageActivity.class);
+            startActivity(intent);
+        });
 
         return view;
     }
