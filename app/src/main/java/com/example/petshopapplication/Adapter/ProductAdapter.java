@@ -64,16 +64,16 @@ public class ProductAdapter extends  RecyclerView.Adapter<ProductAdapter.Product
             holder.txt_product_name.setText(product.getName());
 
         }
+
         double oldPrice = product.getBasePrice();
         String imageUrl = product.getBaseImageURL();
 
         //Check if product have variants
-        if(product.getListVariant() != null && !product.getListVariant().isEmpty()) {
-            oldPrice = product.getListVariant().get(0).getPrice();
-            //check if product have color variants
-            if(product.getListVariant().get(0).getListColor() != null && !product.getListVariant().get(0).getListColor().isEmpty()) {
-                imageUrl = product.getListVariant().get(0).getListColor().get(0).getImageUrl();
-            }
+        if (imageUrl != null && !imageUrl.isEmpty()) {
+            Glide.with(context)
+                    .load(imageUrl)
+                    .transform(new CenterCrop(), new RoundedCorners(30))
+                    .into(holder.imv_product_image);
         }
 
         //check if product is discounted
@@ -96,7 +96,6 @@ public class ProductAdapter extends  RecyclerView.Adapter<ProductAdapter.Product
                 .load(imageUrl)
                 .transform(new CenterCrop(), new RoundedCorners(30))
                 .into(holder.imv_product_image);
-
 
         holder.itemView.setOnClickListener(v -> {
             // Open product detail activity with product id
@@ -161,21 +160,22 @@ public class ProductAdapter extends  RecyclerView.Adapter<ProductAdapter.Product
 
 
     public class ProductHolder extends RecyclerView.ViewHolder {
-
-        TextView txt_product_name, tv_new_price, tv_rating, tv_discount, tv_old_price, tv_category, tv_rated_num;
         ImageView imv_product_image;
-
+        TextView txt_product_name, tv_rating, tv_rated_num,tv_new_price, txt_rated, txt_price, tv_old_price, tv_category, tv_discount;
 
         public ProductHolder(@NonNull View itemView) {
             super(itemView);
-            tv_discount = itemView.findViewById(R.id.tv_discount);
-            txt_product_name = itemView.findViewById(R.id.txt_product_name);
-            tv_new_price = itemView.findViewById(R.id.txt_price);
-            tv_rating = itemView.findViewById(R.id.tv_rating);
             imv_product_image = itemView.findViewById(R.id.imv_product_image);
+            txt_product_name = itemView.findViewById(R.id.txt_product_name);
+            tv_rating = itemView.findViewById(R.id.tv_rating);
+            tv_rated_num = itemView.findViewById(R.id.tv_rated_num);
+            txt_rated = itemView.findViewById(R.id.txt_rated);
+            txt_price = itemView.findViewById(R.id.txt_price);
             tv_old_price = itemView.findViewById(R.id.tv_old_price);
             tv_category = itemView.findViewById(R.id.tv_category);
-            tv_rated_num = itemView.findViewById(R.id.tv_rated_num);
+            tv_discount = itemView.findViewById(R.id.tv_discount);
+            tv_new_price = itemView.findViewById(R.id.tv_new_price);
         }
     }
+
 }

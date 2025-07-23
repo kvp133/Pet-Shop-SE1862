@@ -149,7 +149,7 @@ public class HomeActivity extends AppCompatActivity {
     public void initFeedback() {
         reference = database.getReference(getString(R.string.tbl_feedback_name));
         //Display progress bar
-        binding.prgFeedback.setVisibility(View.VISIBLE);
+//        binding.prgFeedback.setVisibility(View.VISIBLE);
 
         List<FeedBack> feedbackItems = new ArrayList<>();
 
@@ -192,8 +192,8 @@ public class HomeActivity extends AppCompatActivity {
                         }
                         if(userItems.size() > 0) {
                             feedbackAdapter = new FeedBackAdapter(feedbackItems, userItems);
-                            binding.rcvFeedback.setLayoutManager(new LinearLayoutManager(HomeActivity.this, RecyclerView.VERTICAL, true));
-                            binding.rcvFeedback.setAdapter(feedbackAdapter);
+//                            binding.rcvFeedback.setLayoutManager(new LinearLayoutManager(HomeActivity.this, RecyclerView.VERTICAL, true));
+//                            binding.rcvFeedback.setAdapter(feedbackAdapter);
 
                             binding.btnHomeUserPanel.setOnClickListener(v -> {
                                 Intent intent = new Intent(HomeActivity.this, UserPanel.class);
@@ -201,7 +201,7 @@ public class HomeActivity extends AppCompatActivity {
                                 startActivity(intent);
                             });
                         }
-                        binding.prgFeedback.setVisibility(View.GONE);
+//                        binding.prgFeedback.setVisibility(View.GONE);
                     }
                 }
 
