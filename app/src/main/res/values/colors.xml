@@ -1,19 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <!-- Basic Colors -->
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="edtColor">#edbea4</color>
+
+    <!-- Primary Colors -->
+    <color name="primary">#3B82F6</color>
+    <color name="primary_dark">#4a5568</color>
+    <color name="primary_light">#e6fffa</color>
+    <color name="primary_gradient_start">#667eea</color>
+    <color name="primary_gradient_end">#764ba2</color>
+
+    <!-- Accent Colors -->
+    <color name="accent_orange">#ff6b6b</color>
+    <color name="accent_blue">#4ecdc4</color>
+    <color name="accent_green">#45b7d1</color>
+
+    <!-- Background Colors -->
+    <color name="background_primary">#edf2f7</color>
+    <color name="background_secondary">#edf2f7</color>
+
+    <!-- Surface Colors -->
+    <color name="surface_primary">#FFFFFF</color>
+    <color name="surface_secondary">#F8FAFC</color>
+
+    <!-- Text Colors -->
+    <color name="text_primary">#2d3748</color>
+    <color name="text_secondary">#718096</color>
+    <color name="text_tertiary">#94A3B8</color>
+    <color name="text_hint">#a0aec0</color>
+    <color name="hint_text">#a0aec0</color>
     <color name="textColorHint">#bf592b</color>
+
+    <!-- Button & UI Element Colors -->
     <color name="button_background">#fe854f</color>
+    <color name="deleteText">#8A8989</color>
+
+    <!-- Greyscale & Helpers -->
     <color name="grey">#F5F5F5</color>
     <color name="gray">#7C7B7B</color>
-    <color name="yellow">#FFEB3B</color>
-    <color name="red">#E03535</color>
-    <color name="deleteText">#8A8989</color>
     <color name="light_grey">#F3F3F3</color>
-    <color name="green">#1FA867</color>
-    <color name="yellow_star">#FFC106</color>
 
+    <!-- Status & Semantic Colors -->
+    <color name="success">#10B981</color>
+    <color name="success_green">#38a169</color>
+    <color name="success_light">#D1FAE5</color>
+    <color name="error">#EF4444</color>
+    <color name="error_light">#FEE2E2</color>
+    <color name="warning">#F59E0B</color>
+    <color name="warning_light">#FEF3C7</color>
+    <color name="discount_red">#e53e3e</color>
+    <color name="rating_yellow">#ffd700</color>
+    <color name="yellow">#FFEB3B</color>
+    <color name="yellow_star">#FFC106</color>
+    <color name="red">#E03535</color>
+    <color name="green">#1FA867</color>
+
+    <!-- Legacy / Compatibility Colors -->
+    <color name="edtColor">#edbea4</color>
+    <color name="red_legacy">#EF4444</color>
+
+    <!-- Material Palette -->
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>
     <color name="purple_700">#FF3700B3</color>
@@ -21,54 +69,29 @@
     <color name="teal_700">#FF018786</color>
     <color name="lavender">#8692f7</color>
 
+    <!-- Glassmorphism Colors -->
     <color name="glass_blue_1">#2193b0</color>
     <color name="glass_blue_2">#6dd5ed</color>
     <color name="glass_white_translucent">#80FFFFFF</color>
     <color name="glass_border">#40FFFFFF</color>
-
     <color name="glass_white_80">#CCFFFFFF</color>
     <color name="glass_white_50">#80FFFFFF</color>
     <color name="glass_border_white">#40FFFFFF</color>
     <color name="glass_link_blue">#B3E5FC</color>
-    <color name="glass_white">#f0ffffff</color> <!-- From second file -->
+    <color name="glass_white">#f0ffffff</color>
 
-    <!-- Primary Color Palette -->
-    <color name="primary_gradient_start">#667eea</color>
-    <color name="primary_gradient_end">#764ba2</color>
-    <color name="primary_dark">#4a5568</color>
-    <color name="primary_light">#e6fffa</color>
+    <!-- Category & Card -->
+    <color name="category_bg_gradient">#e6fffa</color>
+    <color name="category_bg_light">#f0f8ff</color>
+    <color name="card_shadow">#1a202c20</color>
+    <color name="card_border">#e2e8f0</color>
 
-    <!-- Accent Colors -->
-    <color name="accent_orange">#ff6b6b</color>
-    <color name="accent_blue">#4ecdc4</color>
-    <color name="accent_green">#45b7d1</color>
-
-    <!-- Text Colors -->
-    <color name="text_primary">#2d3748</color>
-    <color name="text_secondary">#718096</color>
-    <color name="text_hint">#a0aec0</color>
-    <color name="hint_text">#a0aec0</color>
-
-    <!-- Background Colors -->
-    <color name="background_primary">#f7fafc</color>
-    <color name="background_secondary">#edf2f7</color>
+    <!-- Pet Shop Specific -->
+    <color name="pet_shop_background">#F7F9FC</color>
 
     <color name="colorPrimaryBlue">#2196F3</color>
     <color name="colorDarkBlue">#1976D2</color>
     <color name="colorLightBlue">#BBDEFB</color>
     <color name="colorTextDark">#333333</color>
     <color name="colorTextLight">#FFFFFF</color>
-
-    <!-- Category Colors -->
-    <color name="category_bg_gradient">#e6fffa</color>
-    <color name="category_bg_light">#f0f8ff</color>
-
-    <!-- Status Colors -->
-    <color name="discount_red">#e53e3e</color>
-    <color name="rating_yellow">#ffd700</color>
-    <color name="success_green">#38a169</color>
-
-    <!-- Card Colors -->
-    <color name="card_shadow">#1a202c20</color>
-    <color name="card_border">#e2e8f0</color>
 </resources>

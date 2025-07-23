@@ -259,7 +259,8 @@ public class ManageProductActivity extends AppCompatActivity implements ListProd
 
     public void onDeleteClickEvent(Product product) {
         // Create an AlertDialog builder
-        new AlertDialog.Builder(this)
+        new AlertDialog.Builder( ManageProductActivity.this,
+                android.R.style.Theme_DeviceDefault_Light_Dialog_Alert)
                 .setTitle("Delete Product")
                 .setMessage("Are you sure you want to delete this product?")
                 .setPositiveButton("Yes", (dialog, which) -> {
