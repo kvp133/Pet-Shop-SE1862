@@ -4,117 +4,91 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.bumptech.glide.Glide;
-import com.example.petshopapplication.API.GoshipAPI;
-import com.example.petshopapplication.API.RetrofitClient;
-import com.example.petshopapplication.API_model.ShipmentSearchResponse;
 import com.example.petshopapplication.databinding.ActivityCreateOrderSuccessBinding;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import com.example.petshopapplication.model.Order;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 public class CreateOrderSuccessActivity extends AppCompatActivity {
     private ActivityCreateOrderSuccessBinding binding;
     private String TAG = "CreateOrderSuccessActivity";
-    private String successOrderId;
-    private String AUTH_TOKEN;
+    private String shipmentId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         binding = ActivityCreateOrderSuccessBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        // Hide until data is loaded
-        binding.getRoot().setVisibility(View.GONE);
+        // Lấy shipmentId từ Intent
+        shipmentId = getIntent().getStringExtra("successShipmentId");
+        if (shipmentId == null || shipmentId.isEmpty()) {
+            Toast.makeText(this, "Không tìm thấy mã vận đơn", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
 
-        AUTH_TOKEN = "Bearer " + getResources().getString(R.string.goship_api_token);
-
-        successOrderId = getIntent().getStringExtra("successOrderId");
-        Log.d(TAG, "Success Order ID: " + successOrderId);
-
-        binding.tvShipmentCode.setText(successOrderId);
-        binding.tvShipmentCode.setText(successOrderId);
-
-        searchShipment(successOrderId);
+        binding.tvShipmentCode.setText(shipmentId);
+        loadOrderInfo(shipmentId);
 
         binding.btnConfirm.setOnClickListener(v -> {
             Intent intent = new Intent(CreateOrderSuccessActivity.this, ListOrderManageActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
+            finish();
         });
 
-        binding.btnBack.setOnClickListener(v -> {
-            Intent intent = new Intent(CreateOrderSuccessActivity.this, ListOrderManageActivity.class);
-            startActivity(intent);
-        });
-
+        binding.btnBack.setOnClickListener(v -> finish());
     }
 
+    // Tải thông tin đơn hàng từ Firebase dựa trên shipmentId
+    private void loadOrderInfo(String shipmentId) {
+        DatabaseReference ordersRef = FirebaseDatabase.getInstance().getReference("orders");
+        Query query = ordersRef.orderByChild("shipmentId").equalTo(shipmentId).limitToFirst(1);
 
-    // Call API searchShipment
-    private void searchShipment(String code) {
-        GoshipAPI api = RetrofitClient.getRetrofitInstance().create(GoshipAPI.class);
-
-        // Put (code)
-        Call<ShipmentSearchResponse> call = api.searchShipment(
-                "application/json",
-                "application/json",
-                AUTH_TOKEN,
-                code
-        );
-
-        // Response from API
-        call.enqueue(new Callback<ShipmentSearchResponse>() {
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onResponse(Call<ShipmentSearchResponse> call, Response<ShipmentSearchResponse> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    ShipmentSearchResponse shipmentResponse = response.body();
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        Order order = snapshot.getValue(Order.class);
+                        if (order != null) {
+                            // Cập nhật giao diện với thông tin từ Firebase
+                            binding.tvShipmentTitle.setText(order.getCarrierName() + " - Shipment Code");
+                            Glide.with(CreateOrderSuccessActivity.this)
+                                    .load(order.getCarrierLogo())
+                                    .into(binding.imgShipmentLogo);
 
-                    Log.d(TAG, "Shipment found: " + shipmentResponse.getData().get(0).getId());
+                            // (Giả sử bạn đã lưu địa chỉ cửa hàng vào Firebase, nếu chưa thì có thể lấy từ strings.xml)
+                            binding.addressFrom.setText(getResources().getString(R.string.petshop_address_ward_description) + ", " + getResources().getString(R.string.petshop_address_district_description) + ", " + getResources().getString(R.string.petshop_address_city_description));
 
-                    binding.tvShipmentTitle.setText(shipmentResponse.getData().get(0).getCarrierName() + " - Shipment Code");
-                    String carrierLogo = shipmentResponse.getData().get(0).getCarrierLogo();
-                    Log.d(TAG, "Shipment carrierLogo: " + carrierLogo);
-                    Glide.with(CreateOrderSuccessActivity.this)
-                            .load(shipmentResponse.getData().get(0).getCarrierLogo())
-                            .into(binding.imgShipmentLogo);
-                    Log.d(TAG, "Shipment carrierLogo set binding: success");
-                    ShipmentSearchResponse.Address addressFrom = shipmentResponse.getData().get(0).getAddressFrom();
-                    String addFromStr = addressFrom.getWard() + " - " + addressFrom.getDistrict() + " - " + addressFrom.getCity();
-                    Log.d(TAG, "Shipment addFromStr: " + addFromStr);
+                            String addressToStr = order.getWard() + ", " + order.getDistrict() + ", " + order.getCity();
+                            binding.addressTo.setText(addressToStr);
+                            binding.orderStatus.setText("Chờ đơn vị vận chuyển đến lấy hàng");
 
-                    binding.addressFrom.setText(addFromStr);
-
-                    ShipmentSearchResponse.Address addressTo = shipmentResponse.getData().get(0).getAddressTo();
-                    String addtoStr = addressTo.getWard() + " - " + addressTo.getDistrict() + " - " + addressTo.getCity();
-                    binding.addressTo.setText(addtoStr);
-
-                    String shipmentStatus;
-                    binding.orderStatus.setText("Chờ đơn vị vận chuyển đến lấy hàng");
-
-
-                    // Display the data in the UI
-                    binding.getRoot().setVisibility(View.VISIBLE);
-
+                            binding.getRoot().setVisibility(View.VISIBLE);
+                            return;
+                        }
+                    }
                 } else {
-                    Log.e(TAG, "Không tìm thấy thông tin vận chuyển, mã lỗi: " + response.code());
+                    Log.e(TAG, "Không tìm thấy đơn hàng với mã vận đơn: " + shipmentId);
+                    Toast.makeText(CreateOrderSuccessActivity.this, "Không tìm thấy thông tin đơn hàng", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
-            public void onFailure(Call<ShipmentSearchResponse> call, Throwable t) {
-                Log.e(TAG, "Lỗi khi gọi API: " + t.getMessage());
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e(TAG, "Lỗi khi tải thông tin đơn hàng: " + databaseError.getMessage());
             }
         });
     }
-
 }
