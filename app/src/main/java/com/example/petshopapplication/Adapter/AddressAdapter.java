@@ -45,19 +45,21 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressV
 
         Log.d(TAG, "Binding address: " + UAddress.getFullName() + " - " + UAddress.getPhone());
 
-
         if (UAddress.isDefault()) {
-            holder.defaultTextView.setVisibility(View.VISIBLE); // Hiện TextView nếu là mặc định
+            holder.defaultTextView.setVisibility(View.VISIBLE);
         } else {
-            holder.defaultTextView.setVisibility(View.GONE); // Ẩn TextView nếu không phải
+            holder.defaultTextView.setVisibility(View.GONE);
         }
-        holder.itemView.setOnClickListener(v -> {
+
+        // Gán sự kiện click CHỈ cho nút "Sửa"
+        holder.edt_update.setOnClickListener(v -> {
             Intent intent = new Intent(context, AddressUpdateActivity.class);
             intent.putExtra("addressId", UAddress.getAddressId());
             context.startActivity(intent);
             Log.d(TAG, "Opening AddressUpdateActivity for addressId: " + UAddress.getAddressId());
         });
 
+        // Gán sự kiện click cho RadioButton để chọn địa chỉ
         holder.radioButton.setOnClickListener(v -> {
             if (listener != null) {
                 listener.onAddressSelected(UAddress);
@@ -74,7 +76,7 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressV
     }
 
     public static class AddressViewHolder extends RecyclerView.ViewHolder {
-        TextView fullNameTextView, phoneTextView, addressTextView,defaultTextView;
+        TextView fullNameTextView, phoneTextView, addressTextView, defaultTextView, edt_update; // Thêm edt_update vào đây
         RadioButton radioButton;
 
         public AddressViewHolder(@NonNull View itemView) {
@@ -84,6 +86,7 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressV
             addressTextView = itemView.findViewById(R.id.addressTextView);
             radioButton = itemView.findViewById(R.id.radioButton);
             defaultTextView = itemView.findViewById(R.id.defaultTextView);
+            edt_update = itemView.findViewById(R.id.edt_update); // Thêm dòng này
         }
     }
 

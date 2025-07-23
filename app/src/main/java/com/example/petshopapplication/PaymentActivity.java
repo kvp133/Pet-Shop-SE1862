@@ -125,7 +125,7 @@ public class PaymentActivity extends AppCompatActivity {
     private void loadDefaultAddress() {
         FirebaseUser user = auth.getCurrentUser();
         if (user == null) return;
-        DatabaseReference addressRef = database.getReference("Addresses");
+        DatabaseReference addressRef = database.getReference("addresses");
         addressRef.orderByChild("userId").equalTo(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -249,11 +249,108 @@ public class PaymentActivity extends AppCompatActivity {
     }
 
     private void createOrder() {
-        if(selectedUAddress == null){
+        if (selectedUAddress == null) {
             Toast.makeText(this, "Vui lòng chọn địa chỉ giao hàng", Toast.LENGTH_SHORT).show();
             return;
         }
-        // Logic tạo đơn hàng trên Firebase, tương tự code hiện tại của bạn...
+        if (selectedItems == null || selectedItems.isEmpty()) {
+            Toast.makeText(this, "Giỏ hàng của bạn đang trống", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         Toast.makeText(this, "Đang xử lý đặt hàng...", Toast.LENGTH_SHORT).show();
+        payButton.setEnabled(false); // Vô hiệu hóa nút để tránh click nhiều lần
+
+        FirebaseUser currentUser = auth.getCurrentUser();
+        if (currentUser == null) {
+            Toast.makeText(this, "Bạn cần đăng nhập để đặt hàng", Toast.LENGTH_SHORT).show();
+            payButton.setEnabled(true);
+            return;
+        }
+
+        DatabaseReference ordersRef = database.getReference("orders");
+        DatabaseReference paymentsRef = database.getReference("payments");
+        DatabaseReference cartsRef = database.getReference("carts");
+
+        String orderId = "order-" + ordersRef.push().getKey();
+        String paymentId = "payment-" + paymentsRef.push().getKey();
+
+        // 1. Tạo danh sách OrderDetail
+        List<OrderDetail> orderDetails = new ArrayList<>();
+        for (Cart item : selectedItems) {
+            // Cần lấy giá chính xác của sản phẩm tại thời điểm đặt hàng
+            // Giả sử `totalPrice` đã bao gồm giá đúng của tất cả sản phẩm
+            // Để đơn giản, ta chia đều tổng giá cho các sản phẩm (bạn nên thay bằng logic lấy giá từng sản phẩm)
+            double purchasedPrice = totalPrice / selectedItems.size();
+
+            OrderDetail detail = new OrderDetail(
+                    item.getProductId(),
+                    item.getSelectedVariantId(),
+                    item.getSelectedColorId(),
+                    item.getQuantity(),
+                    purchasedPrice // Cần logic tính giá chính xác cho từng item
+            );
+            orderDetails.add(detail);
+        }
+
+        // 2. Tạo đối tượng Payment
+        Payment payment = new Payment(
+                paymentId,
+                orderId,
+                "Thanh toán khi nhận hàng", // Hoặc phương thức thanh toán khác
+                totalPrice + shippingFee,
+                null // transactionId nếu có
+        );
+
+        // 3. Tạo đối tượng Order
+        Order order = new Order(
+                orderId,
+                currentUser.getUid(),
+                selectedUAddress.getFullName(),
+                selectedUAddress.getPhone(),
+                null, // shipmentId
+                null, // rateId
+                "https://i.ibb.co/BLS22fM/Giao-Hang-Nhanh-logo.png", // carrierLogo (ví dụ)
+                "Giao Hàng Nhanh", // carrierName (ví dụ)
+                String.valueOf(selectedUAddress.getDistrictId()),
+                selectedUAddress.getDistrict(),
+                String.valueOf(selectedUAddress.getProvinceId()),
+                selectedUAddress.getCity(),
+                selectedUAddress.getWardCode(),
+                selectedUAddress.getWard(),
+                totalPrice + shippingFee,
+                orderDetails,
+                new Date(),
+                paymentId,
+                "Processing",
+                false
+        );
+
+        // 4. Lưu Order và Payment vào Firebase
+        paymentsRef.child(paymentId).setValue(payment).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                ordersRef.child(orderId).setValue(order).addOnCompleteListener(orderTask -> {
+                    if (orderTask.isSuccessful()) {
+                        // 5. Xóa sản phẩm khỏi giỏ hàng
+                        for (Cart item : selectedItems) {
+                            cartsRef.child(item.getCartId()).removeValue();
+                        }
+
+                        // 6. Chuyển đến màn hình thành công
+                        Toast.makeText(PaymentActivity.this, "Đặt hàng thành công!", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(PaymentActivity.this, OrderingActivity.class);
+                        intent.putExtra("orderId", orderId);
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        Toast.makeText(PaymentActivity.this, "Tạo đơn hàng thất bại.", Toast.LENGTH_SHORT).show();
+                        payButton.setEnabled(true);
+                    }
+                });
+            } else {
+                Toast.makeText(PaymentActivity.this, "Tạo thanh toán thất bại.", Toast.LENGTH_SHORT).show();
+                payButton.setEnabled(true);
+            }
+        });
     }
 }

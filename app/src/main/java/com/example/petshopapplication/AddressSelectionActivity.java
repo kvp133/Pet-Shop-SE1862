@@ -71,9 +71,10 @@ public class AddressSelectionActivity extends AppCompatActivity implements Addre
     private void proceedToPayment(UAddress selectedAddress) {
         if (selectedAddress != null) {
             Intent intent = new Intent();
-            intent.putExtra("selectedAddress", selectedAddress); // Chuyển địa chỉ đã chọn
-            setResult(RESULT_OK, intent); // Gửi kết quả về activity trước đó
-            finish(); // Kết thúc Activity này
+            // Sửa key từ "selectedAddress" thành "SELECTED_ADDRESS"
+            intent.putExtra("SELECTED_ADDRESS", selectedAddress);
+            setResult(RESULT_OK, intent);
+            finish();
         } else {
             Toast.makeText(this, "Vui lòng chọn địa chỉ!", Toast.LENGTH_SHORT).show();
         }

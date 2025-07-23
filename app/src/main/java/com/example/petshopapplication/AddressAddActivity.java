@@ -204,7 +204,7 @@ public class AddressAddActivity extends AppCompatActivity {
                 selectedWardCode
         );
 
-        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference("Addresses");
+        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference("addresses");
         dbRef.child(addressId).setValue(address).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 Toast.makeText(AddressAddActivity.this, "Lưu địa chỉ thành công", Toast.LENGTH_SHORT).show();
