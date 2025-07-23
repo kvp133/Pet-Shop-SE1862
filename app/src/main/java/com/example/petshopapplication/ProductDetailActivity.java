@@ -326,10 +326,10 @@ public class ProductDetailActivity extends AppCompatActivity implements ProductI
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                //Update product detail view
                 if (snapshot.exists()) {
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                         Product product = dataSnapshot.getValue(Product.class);
+
+                        Product product = dataSnapshot.getValue(Product.class);
                          if (product == null) {
                              Toast.makeText(ProductDetailActivity.this, "Product not found!", Toast.LENGTH_SHORT).show();
                              finish();
@@ -337,30 +337,17 @@ public class ProductDetailActivity extends AppCompatActivity implements ProductI
                          }
                          binding.tvProductName.setText(product.getName());
 
-                        //Check if product have variants
-                        if(!product.getListVariant().isEmpty()) {
-                            Variant variant = product.getListVariant().get(0);
-                            selectedVariantId = variant.getId();
-                            if(variant.getListColor() != null && !variant.getListColor().isEmpty()) {
-                                Color color = variant.getListColor().get(0);
-                                selectedColorId = color.getId();
-                                fillProductData(product, variant, color);
-                            } else {
-                                fillProductData(product, variant, null);
-                            }
-                        } else {
-                            fillProductData(product, null, null);
-                        }
+                        // 1. Khởi tạo và thiết lập adapter ảnh (chỉ hiển thị baseImageURL)
+                        fetchProductImage(product);
 
+                        // 2. Gọi fillProductData cho ảnh ban đầu.
+                        // Đảm bảo màn hình chính hiển thị ảnh và thông tin của sản phẩm gốc.
+                        fillProductData(product, null, null);
 
-
-                         initCategory(product);
-                         fetchFeedback(product);
-                         fetchProductImage(product);
-                         fillCartVariantInformation(product);
+                        initCategory(product);
+                        fetchFeedback(product);
+                        fillCartVariantInformation(product);
                     }
-
-
                 }
             }
 
@@ -614,7 +601,7 @@ public class ProductDetailActivity extends AppCompatActivity implements ProductI
 
     @Override
     public void onProductImageClick(Product product, Variant variant, Color color) {
-        fillProductData(product, variant, color);
+        fillProductData(product, null, null); // Luôn gọi với null cho variant và color
     }
 
     @Override
