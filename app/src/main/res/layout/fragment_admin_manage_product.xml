@@ -49,7 +49,14 @@
             android:textSize="20sp"
             android:layout_marginTop="16dp"
             android:onClick="openManageCategory" />
-
+        <Button
+            android:id="@+id/btnManageOrder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Manage Order"
+            android:backgroundTint="@color/glass_blue_1"
+            android:textSize="20sp"
+            android:layout_marginTop="16dp" />
 
     </LinearLayout>
 
