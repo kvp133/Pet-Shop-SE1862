@@ -89,4 +89,9 @@
     <!-- Pet Shop Specific -->
     <color name="pet_shop_background">#F7F9FC</color>
 
+    <color name="colorPrimaryBlue">#2196F3</color>
+    <color name="colorDarkBlue">#1976D2</color>
+    <color name="colorLightBlue">#BBDEFB</color>
+    <color name="colorTextDark">#333333</color>
+    <color name="colorTextLight">#FFFFFF</color>
 </resources>
