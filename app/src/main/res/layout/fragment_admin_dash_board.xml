@@ -1,179 +1,226 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
     android:layout_width="match_parent"
-    android:layout_height="600dp"
-    android:orientation="vertical"
-    android:gravity="center"
-    android:background="@drawable/glass_bg"
-    android:padding="16dp"
-    tools:context=".AdminDashBoardFragment">
+    android:layout_height="match_parent"
+    android:fillViewport="true">
 
-    <!-- BarChart for Trending Products -->
-    <androidx.cardview.widget.CardView
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/main"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_margin="8dp"
-        android:layout_weight="0.6"
-        app:cardCornerRadius="16dp"
-        app:cardElevation="8dp"
-        app:cardBackgroundColor="@color/glass_white_50">
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:paddingBottom="56dp"
+        tools:context=".AdminDashBoardFragment">
+
+        <!-- Biểu đồ sản phẩm bán chạy nhất -->
+        <TextView
+            android:id="@+id/trendingChartTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:gravity="center"
+            android:text="Top 5 Sản phẩm bán chạy nhất"
+            android:textColor="@color/colorDarkBlue"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <com.github.mikephil.charting.charts.BarChart
             android:id="@+id/trendingProductBarChart"
+            android:layout_width="0dp"
+            android:layout_height="300dp"
+            android:layout_margin="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/trendingChartTitle" />
+
+        <!-- Biểu đồ tỷ lệ sản phẩm theo danh mục -->
+        <TextView
+            android:id="@+id/categoryChartTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:gravity="center"
+            android:text="Tỷ lệ sản phẩm theo danh mục"
+            android:textColor="@color/colorDarkBlue"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/trendingProductBarChart" />
+
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/categoryProductPieChart"
+            android:layout_width="0dp"
+            android:layout_height="300dp"
+            android:layout_margin="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/categoryChartTitle" />
+
+        <!-- Lưới thống kê (4 ô tròn) -->
+        <GridLayout
+            android:id="@+id/statisticsGridLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="16dp" />
+            android:layout_height="wrap_content"
+            android:columnCount="2"
+            android:padding="8dp"
+            android:rowCount="2"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/categoryProductPieChart"
+            app:layout_constraintVertical_bias="1.0">
 
-    </androidx.cardview.widget.CardView>
+            <!-- Tổng số người dùng -->
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_margin="8dp">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:padding="8dp">
-
-        <!-- Total User Circle -->
-        <FrameLayout
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:layout_margin="8dp">
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:cardCornerRadius="60dp"
-                app:cardElevation="8dp"
-                app:cardBackgroundColor="@color/glass_blue_1">
-
-                <LinearLayout
+                <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:orientation="vertical">
+                    android:layout_height="120dp"
+                    app:cardCornerRadius="60dp"
+                    app:cardElevation="8dp"
+                    app:cardBackgroundColor="@color/glass_blue_1">
 
-                    <TextView
-                        android:id="@+id/totalUserText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:gravity="center"
-                        android:text="Total User"
-                        android:textSize="16sp"
-                        android:textColor="@android:color/white"
-                        android:fontFamily="@font/poppins_semibold"/>
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-        </FrameLayout>
+                        android:orientation="vertical"
+                        android:padding="16dp">
 
-        <!-- Total Product Circle -->
-        <FrameLayout
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:layout_margin="8dp">
+                        <TextView
+                            android:id="@+id/totalUserText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="Tổng số người dùng:\n0"
+                            android:textColor="@color/colorTextLight"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+            </FrameLayout>
 
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:cardCornerRadius="60dp"
-                app:cardElevation="8dp"
-                app:cardBackgroundColor="@color/glass_blue_2">
+            <!-- Tổng số sản phẩm -->
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_margin="8dp">
 
-                <LinearLayout
+                <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:orientation="vertical">
+                    android:layout_height="120dp"
+                    app:cardCornerRadius="60dp"
+                    app:cardElevation="8dp"
+                    app:cardBackgroundColor="@color/glass_blue_2">
 
-                    <TextView
-                        android:id="@+id/totalProductText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:gravity="center"
-                        android:text="Total Product"
-                        android:textSize="16sp"
-                        android:textColor="@android:color/white"
-                        android:fontFamily="@font/poppins_semibold"/>
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-        </FrameLayout>
+                        android:orientation="vertical"
+                        android:padding="16dp">
 
-    </LinearLayout>
+                        <TextView
+                            android:id="@+id/totalProductText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="Tổng số sản phẩm:\n0"
+                            android:textColor="@color/colorTextLight"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+            </FrameLayout>
 
-    <!-- Second Row (2 circles horizontally) -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:padding="8dp">
+            <!-- Tổng số danh mục -->
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_margin="8dp">
 
-        <!-- Total Category Circle -->
-        <FrameLayout
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:layout_margin="8dp">
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:cardCornerRadius="60dp"
-                app:cardElevation="8dp"
-                app:cardBackgroundColor="@color/glass_link_blue">
-
-                <LinearLayout
+                <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:orientation="vertical">
+                    android:layout_height="120dp"
+                    app:cardCornerRadius="60dp"
+                    app:cardElevation="8dp"
+                    app:cardBackgroundColor="@color/glass_link_blue">
 
-                    <TextView
-                        android:id="@+id/totalCategoryText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:gravity="center"
-                        android:text="Total Category"
-                        android:textSize="16sp"
-                        android:textColor="@android:color/white"
-                        android:fontFamily="@font/poppins_semibold"/>
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-        </FrameLayout>
+                        android:orientation="vertical"
+                        android:padding="16dp">
 
-        <!-- Total Order Circle -->
-        <FrameLayout
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:layout_margin="8dp">
+                        <TextView
+                            android:id="@+id/totalCategoryText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="Tổng số danh mục:\n0"
+                            android:textColor="@color/colorTextLight"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+            </FrameLayout>
 
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:cardCornerRadius="60dp"
-                app:cardElevation="8dp"
-                app:cardBackgroundColor="@color/glass_blue_1">
+            <!-- Tổng số đơn hàng -->
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_margin="8dp">
 
-                <LinearLayout
+                <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:orientation="vertical">
+                    android:layout_height="120dp"
+                    app:cardCornerRadius="60dp"
+                    app:cardElevation="8dp"
+                    app:cardBackgroundColor="@color/glass_blue_1">
 
-                    <TextView
-                        android:id="@+id/totalOrderText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:gravity="center"
-                        android:text="Total Order"
-                        android:textSize="16sp"
-                        android:textColor="@android:color/white"
-                        android:fontFamily="@font/poppins_semibold"/>
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-        </FrameLayout>
+                        android:orientation="vertical"
+                        android:padding="16dp">
 
-    </LinearLayout>
+                        <TextView
+                            android:id="@+id/totalOrderText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="Tổng số đơn hàng:\n0"
+                            android:textColor="@color/colorTextLight"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+            </FrameLayout>
+        </GridLayout>
 
-</LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

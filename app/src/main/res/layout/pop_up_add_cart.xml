@@ -16,7 +16,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <!-- Product Image & Price -->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -70,7 +69,6 @@
                 app:layout_constraintTop_toBottomOf="@+id/tv_cart_new_price" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <!-- Size -->
         <TextView
             android:id="@+id/tv_size_text"
             android:layout_width="wrap_content"
@@ -95,7 +93,6 @@
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <!-- Color -->
         <TextView
             android:id="@+id/tv_color_text"
             android:layout_width="wrap_content"
@@ -120,7 +117,6 @@
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <!-- Quantity -->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -133,7 +129,7 @@
                 android:text="Quantity"
                 android:textColor="@android:color/white"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
+                app:layout_constraintTop_toTopOf="parent" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -186,16 +182,15 @@
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <!-- Confirm Button -->
         <Button
             android:id="@+id/btn_submit"
             android:layout_width="match_parent"
-            android:layout_marginTop="20dp"
             android:layout_height="50dp"
-            android:textSize="20sp"
+            android:layout_marginTop="20dp"
             android:backgroundTint="@color/glass_blue_1"
-            android:textColor="@android:color/white"
             android:text="Confirm"
+            android:textColor="@android:color/white"
+            android:textSize="20sp"
             app:cornerRadius="12dp" />
 
     </LinearLayout>
