@@ -62,10 +62,10 @@ public class UserPanel extends AppCompatActivity {
             startActivity(intent);
         });
 
-        binding.btnFeedback.setOnClickListener(v -> {
-            Intent intent = new Intent(this, ListUserFeedbackActivity.class);
-            startActivity(intent);
-        });
+//        binding.btnFeedback.setOnClickListener(v -> {
+//            Intent intent = new Intent(this, ListUserFeedbackActivity.class);
+//            startActivity(intent);
+//        });
     }
 
     private void fetchUserData() {

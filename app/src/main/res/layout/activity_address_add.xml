@@ -52,7 +52,8 @@
         android:background="@android:color/white"
         android:hint="Họ và tên"
         android:paddingTop="16dp"
-        android:paddingBottom="16dp" />
+        android:paddingBottom="16dp"
+        android:textColor="#090909" />
 
     <View
         android:layout_width="match_parent"
@@ -69,7 +70,8 @@
         android:hint="Số điện thoại"
         android:inputType="phone"
         android:paddingTop="16dp"
-        android:paddingBottom="16dp" />
+        android:paddingBottom="16dp"
+        android:textColor="#090909" />
 
     <TextView
         android:layout_width="match_parent"
@@ -92,7 +94,8 @@
             android:background="@android:color/white"
             android:hint="Tỉnh/Thành phố"
             android:paddingTop="16dp"
-            android:paddingBottom="16dp" />
+            android:paddingBottom="16dp"
+            android:textColor="#090909" />
 
         <View
             android:layout_width="match_parent"
@@ -107,13 +110,15 @@
             android:background="@android:color/white"
             android:hint="Quận/Huyện"
             android:paddingTop="16dp"
-            android:paddingBottom="16dp" />
+            android:paddingBottom="16dp"
+            android:textColor="#090909" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="3dp"
             android:alpha="0.5"
             android:background="#E0E0E0" />
+
         <EditText
             android:id="@+id/wardSelectButton"
             android:layout_width="match_parent"
@@ -121,7 +126,8 @@
             android:background="@android:color/white"
             android:hint="Phường/Xã"
             android:paddingTop="16dp"
-            android:paddingBottom="16dp" />
+            android:paddingBottom="16dp"
+            android:textColor="#090909" />
     </LinearLayout>
 
     <TextView
